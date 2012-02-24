@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+ * Added sample java docs
+ * 
+ * 
+ */
 public class ChangePasswordActivity extends Activity {
 	Button submitPasswordButton ;
 	TextView passwordText1;
