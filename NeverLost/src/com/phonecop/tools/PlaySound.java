@@ -50,7 +50,7 @@ public class PlaySound {
 						@Override
 						public void onCompletion(MediaPlayer mediaPlayer) {
 							 count++;
-							 if ( count < 5){
+							 if ( count < 8){
 								 mediaPlayer.seekTo(0);
 								 mediaPlayer.start();
 							 }

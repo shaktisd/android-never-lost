@@ -9,6 +9,7 @@ import android.widget.Button;
 public class MainMenuActivity extends Activity {
 	Button changePasswordButton;
 	Button updateSimButton;
+	Button settingsButton;
 	Button helpButton;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +43,21 @@ public class MainMenuActivity extends Activity {
 			}
 		});
 		
+		settingsButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(MainMenuActivity.this,SettingsActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		
 	}
 	private void registerButtons() {
 		changePasswordButton = (Button) findViewById(R.id.changepasswordbutton);
 		updateSimButton = (Button) findViewById(R.id.updatesimbutton);
 		helpButton = (Button) findViewById(R.id.helpbutton);
+		settingsButton = (Button) findViewById(R.id.settingsButton);
 	}
 	
 	

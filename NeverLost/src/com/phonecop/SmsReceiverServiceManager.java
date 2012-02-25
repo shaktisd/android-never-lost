@@ -44,15 +44,26 @@ public class SmsReceiverServiceManager extends BroadcastReceiver {
 				sharedData = new SharedDataAccess(context);
 				playSound = new PlaySound(context);
 				String savedPhoneNumber = sharedData.getAttributeValue(Constants.PHONENUMBER);
-				if (messageFromPhoneNumber != null && savedPhoneNumber != null && messageFromPhoneNumber.contains(savedPhoneNumber)
-						&& str.contains("LOST")){
+				String alarmText = sharedData.getAttributeValue(Constants.ALARMTEXT);
+				String alarmOnSmsFromAnyNumber = sharedData.getAttributeValue(Constants.ALARMONSMSFROMANYNUMBER);
+				boolean fireAlarm = false;
+				if (alarmText != null && alarmText.trim() != "" && str.toLowerCase().contains(alarmText.toLowerCase())){
+					if (alarmOnSmsFromAnyNumber != null && alarmOnSmsFromAnyNumber.trim() != "" && alarmOnSmsFromAnyNumber.equals("true") ){
+						fireAlarm = true;
+					}else {
+						if (messageFromPhoneNumber != null && savedPhoneNumber != null && messageFromPhoneNumber.contains(savedPhoneNumber)){
+							fireAlarm = true;
+						}	
+					}
+					
+				}
+				
+				if ( fireAlarm){
 					playSound.playAlarm();
 					Log.e("SmsReceiverServiceManager","Msg From:" + messageFromPhoneNumber + " Saved Number:" + savedPhoneNumber);
 					Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 				}
-				
 			}
-
 		}
 		
 		
