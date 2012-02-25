@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TableLayout android:layout_width="match_parent" android:id="@+id/tableLayout1" android:layout_height="wrap_content">
+        <TableRow android:id="@+id/tableRow1" android:baselineAligned="false" android:layout_height="wrap_content" android:layout_width="wrap_content">
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView1" android:text="Alarm if SMS contains text:" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_gravity="center"></TextView>
+            <EditText android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_gravity="fill_horizontal" android:id="@+id/alarmText" android:layout_weight="1"></EditText>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow2" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center" android:id="@+id/TextView01" android:text="Enable Alarm for any number:" android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
+            <ToggleButton android:layout_height="wrap_content" android:text="ToggleButton" android:id="@+id/alarmOnSmsFromAnyNumberToggleButton" android:layout_weight="1" android:layout_width="match_parent"></ToggleButton>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow3" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        </TableRow>
+        <TableRow android:id="@+id/tableRow4" android:layout_width="wrap_content" android:layout_height="wrap_content"></TableRow>
+    </TableLayout>
+    <Button android:id="@+id/saveSettingsButton" android:layout_height="wrap_content" android:text="Save Settings" android:layout_gravity="center_horizontal" android:layout_width="wrap_content"></Button>
+    
+</LinearLayout>
