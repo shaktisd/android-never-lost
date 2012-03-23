@@ -19,6 +19,8 @@ import com.rssaggregator.valueobjects.RssFeed;
 public class RssAggregatorApplication extends Application {
 	private EmbeddedObjectContainer db;
 	private RssFeedUtil rssFeedUtil;
+	private String feedUrl;
+	
 	
 	public void onCreate() {
 		super.onCreate();
@@ -43,24 +45,25 @@ public class RssAggregatorApplication extends Application {
 		return ctx.getDir("data", 0) + "/" + "rss.db4o";
 	}
 	
-	/*public void save(Object object){
-		db.store(object);
-		db.commit();
-	}*/
-	
 	public void updateRssFeeds(List<RssFeed> rssFeeds){
 		for(RssFeed rssFeed : rssFeeds){
 			RssFeed dummy = new RssFeed();
 			dummy.setFeedSource(rssFeed.getFeedSource());
 			ObjectSet<Object> result = db.queryByExample(dummy);
+			Log.d("RESULT","size " + result.size());
 			if (result.size() > 0){
 				RssFeed updateRssFeed = (RssFeed)result.next();	
+				updateRssFeed.setFeeds(rssFeed.getFeeds());
 				db.store(updateRssFeed);
 			}else {
 				db.store(rssFeed);
 			}
 		}
 		db.commit();
+	}
+	
+	public Feed findFeed(Feed feed){
+		return (Feed)db.queryByExample(feed).get(0);
 	}
 
 	public List<RssFeed> findAllRssFeeds() {
@@ -86,10 +89,18 @@ public class RssAggregatorApplication extends Application {
 		List<FeedSource> feedSources = new ArrayList<FeedSource>();
 		FeedSource feedSource1 = new FeedSource("NDTV","http://feeds.feedburner.com/NdtvNews-TopStories");
 		FeedSource feedSource2 = new FeedSource("TOI","http://timesofindia.indiatimes.com/rssfeedstopstories.cms");
+		FeedSource feedSource3 = new FeedSource("BLOG","http://feeds.feedburner.com/TheCodeOfANinja");
 		feedSources.add(feedSource1);
 		feedSources.add(feedSource2);
+		feedSources.add(feedSource3);
 		return rssFeedUtil.getRssFeeds(feedSources);
 	}
-	
 
+	public String getFeedUrl() {
+		return feedUrl;
+	}
+
+	public void setFeedUrl(String feedUrl) {
+		this.feedUrl = feedUrl;
+	}
 }
