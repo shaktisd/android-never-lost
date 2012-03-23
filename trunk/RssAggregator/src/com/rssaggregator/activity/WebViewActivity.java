@@ -1,6 +1,7 @@
 package com.rssaggregator.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -16,8 +17,23 @@ public class WebViewActivity extends Activity {
 		String url = getRssAggregatorApplication().getFeedUrl();
 		WebView webView = new WebView(this);
 		setContentView(webView);
+		// Makes Progress bar Visible
+		getWindow().setFeatureInt( Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 		webView.getSettings().setJavaScriptEnabled(true);
 		final Activity activity = this;
+		activity.setTitle("");
+		webView.setWebChromeClient(new WebChromeClient() {
+		    public void onProgressChanged(WebView view, int progress) {
+		        activity.setProgress(progress * 100);
+		        if(progress == 100 ){
+		        	 activity.setTitle(R.string.app_name);
+		        }else if (activity.getTitle() != "" ){
+		        	activity.setTitle("");
+		        }
+		    }
+		});
+
+		
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -26,11 +42,13 @@ public class WebViewActivity extends Activity {
 			}
 		
 		});
-		webView.setWebChromeClient(new WebChromeClient() {
+		/*webView.setWebChromeClient(new WebChromeClient() {
 			public void onProgressChanged(WebView view, int progress) {
-				activity.setProgress(progress * 100);
+				activity.setProgress(progress * 1000);
 			}
-		});
+		});*/
+		
+		
 		
 		webView.loadUrl(url);
 	}

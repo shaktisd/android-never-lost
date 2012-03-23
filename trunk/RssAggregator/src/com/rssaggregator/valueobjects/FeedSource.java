@@ -9,6 +9,8 @@ public class FeedSource {
 		this.feedSourceName = feedSourceName;
 		this.feedSourceUrl = feedSourceUrl;
 	}
+	public FeedSource() {
+	}
 	public String getFeedSourceName() {
 		return feedSourceName;
 	}

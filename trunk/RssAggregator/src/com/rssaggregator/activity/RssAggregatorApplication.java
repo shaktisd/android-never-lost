@@ -31,6 +31,7 @@ public class RssAggregatorApplication extends Application {
 		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
 		config.common().objectClass(RssFeed.class).objectField("feedSource").indexed(true);
 		config.common().objectClass(Feed.class).objectField("url").indexed(true);
+		config.common().objectClass(FeedSource.class).objectField("feedSourceName").indexed(true);
 		if(db == null || db.close()){
 			String path = db4oDBFullPath(this);
 			Log.i("DBLOAD", "Opening DB : " + path);
@@ -53,11 +54,23 @@ public class RssAggregatorApplication extends Application {
 			Log.d("RESULT","size " + result.size());
 			if (result.size() > 0){
 				RssFeed updateRssFeed = (RssFeed)result.next();	
-				updateRssFeed.setFeeds(rssFeed.getFeeds());
-				db.store(updateRssFeed);
-			}else {
-				db.store(rssFeed);
+				db.delete(updateRssFeed);
 			}
+			db.store(rssFeed);
+		}
+		db.commit();
+	}
+	
+	public void updateFeedSource(FeedSource feedSource){
+		FeedSource dummyFeedSource = new FeedSource();
+		dummyFeedSource.setFeedSourceName(feedSource.getFeedSourceName());
+		ObjectSet<Object> result = db.queryByExample(dummyFeedSource);
+		if(result.size() > 0){
+			FeedSource updatedFeedSource = (FeedSource)result.next();
+			updatedFeedSource.setFeedSourceUrl(feedSource.getFeedSourceUrl());
+			db.store(updatedFeedSource);
+		}else {
+			db.store(feedSource);
 		}
 		db.commit();
 	}
@@ -85,15 +98,15 @@ public class RssAggregatorApplication extends Application {
 	}
 	
 	public List<RssFeed> getAllRssFeedsFromSource(){
-		//return rssFeedUtil.getRssFeeds(findAllFeedSource());
-		List<FeedSource> feedSources = new ArrayList<FeedSource>();
+		return rssFeedUtil.getRssFeeds(findAllFeedSource());
+		/*List<FeedSource> feedSources = new ArrayList<FeedSource>();
 		FeedSource feedSource1 = new FeedSource("NDTV","http://feeds.feedburner.com/NdtvNews-TopStories");
 		FeedSource feedSource2 = new FeedSource("TOI","http://timesofindia.indiatimes.com/rssfeedstopstories.cms");
 		FeedSource feedSource3 = new FeedSource("BLOG","http://feeds.feedburner.com/TheCodeOfANinja");
 		feedSources.add(feedSource1);
 		feedSources.add(feedSource2);
 		feedSources.add(feedSource3);
-		return rssFeedUtil.getRssFeeds(feedSources);
+		return rssFeedUtil.getRssFeeds(feedSources);*/
 	}
 
 	public String getFeedUrl() {
