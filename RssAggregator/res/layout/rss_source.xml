@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="wrap_content" android:id="@+id/textView2" android:text="Add RSS Source" android:layout_gravity="center_horizontal" android:layout_width="wrap_content"></TextView>
+    <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:id="@+id/textView4" android:layout_width="wrap_content" android:text="RSS Source Name"></TextView>
+    <EditText android:id="@+id/rssSourceName" android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="text">
+    <requestFocus></requestFocus>
+    </EditText>
+    <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:id="@+id/textView1" android:layout_width="wrap_content" android:text="RSS URL"></TextView>
+    <EditText android:id="@+id/rssUrl" android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="textUri">
+    </EditText>
+    <Button android:layout_gravity="center_horizontal" android:layout_height="wrap_content" android:id="@+id/saveRssSource" android:layout_width="wrap_content" android:text="Save"></Button>
+    
+</LinearLayout>

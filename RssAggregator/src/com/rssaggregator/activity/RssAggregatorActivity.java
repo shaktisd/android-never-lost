@@ -26,10 +26,12 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	RssAggregatorApplication rssAggregatorApplication;
 	private SimpleExpandableListAdapter mAdapter;
 
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
 		rssAggregatorApplication = getRssAggregatorApplication();
 		showRssFeeds();
 		getExpandableListView().setOnChildClickListener(this);
@@ -39,7 +41,7 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,int childPosition, long id) {
 		HashMap<String,String> title = (HashMap<String,String>)mAdapter.getChild(groupPosition, childPosition);
 		 Feed query = new Feed();
-		 query.setTitle(title.values().iterator().next());
+		 query.setTitle(extractTitle(title.values().iterator().next()));
 		 Feed feed = rssAggregatorApplication.findFeed(query);
 		 Log.i("RssAggregatorActivity","group " + groupPosition + " childPosition " + childPosition +  " id " + id + 
 				 " title " + title  + " url " + feed.getUrl());
@@ -50,6 +52,10 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 		return true;
 	}
 
+
+	private String extractTitle(String str) {
+		return str.substring(0,str.indexOf("\n"));
+	}
 
 	private void showRssFeeds() {
 		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllRssFeeds();
@@ -65,7 +71,7 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 			for (Feed feed : rssFeed.getFeeds()) {
 				Map<String, String> curChildMap = new HashMap<String, String>();
 				children.add(curChildMap);
-				curChildMap.put(NAME, feed.getTitle());
+				curChildMap.put(NAME, feed.getTitle() + "\n" + getFormattedTime(feed));
 			}
 			childData.add(children);
 			
@@ -81,6 +87,16 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 				new int[] { android.R.id.text1 });
 		setListAdapter(mAdapter);
 
+	}
+
+	private String getFormattedTime(Feed feed) {
+		StringBuffer sb = new StringBuffer();
+		if (feed.getDate() == null){
+			sb.append("");
+		}else {
+			sb.append((feed.getDate()));
+		}
+		return sb.toString();
 	}
 
 	private void refreshRssFeeds() {
@@ -115,7 +131,8 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 			refreshRssFeeds();
 			return true;
 		case R.id.menu_add_rss_source:
-			Toast.makeText(RssAggregatorActivity.this, "Add RSS source Selected", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(this, FeedSourceActivity.class);
+			startActivity(intent);
 			return true;			
 		default:
 			return super.onOptionsItemSelected(item);
