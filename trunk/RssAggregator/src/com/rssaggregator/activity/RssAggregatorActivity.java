@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ExpandableListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 
@@ -29,7 +32,24 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 		setContentView(R.layout.main);
 		rssAggregatorApplication = getRssAggregatorApplication();
 		showRssFeeds();
+		getExpandableListView().setOnChildClickListener(this);
 	}
+	
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,int childPosition, long id) {
+		HashMap<String,String> title = (HashMap<String,String>)mAdapter.getChild(groupPosition, childPosition);
+		 Feed query = new Feed();
+		 query.setTitle(title.values().iterator().next());
+		 Feed feed = rssAggregatorApplication.findFeed(query);
+		 Log.i("RssAggregatorActivity","group " + groupPosition + " childPosition " + childPosition +  " id " + id + 
+				 " title " + title  + " url " + feed.getUrl());
+		 rssAggregatorApplication.setFeedUrl(feed.getUrl());
+		 Intent intent = new Intent(this, WebViewActivity.class);
+		 startActivity(intent);
+		 
+		return true;
+	}
+
 
 	private void showRssFeeds() {
 		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllRssFeeds();
