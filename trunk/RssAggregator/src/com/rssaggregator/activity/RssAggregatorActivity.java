@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,19 +34,22 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
 		rssAggregatorApplication = getRssAggregatorApplication();
-		showRssFeeds();
+		showRssFeeds("onCreate");
 		getExpandableListView().setOnChildClickListener(this);
 	}
 	
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,int childPosition, long id) {
+		if (!rssAggregatorApplication.isOnline()){
+			Toast.makeText(this, "No INTERNET connection detected", Toast.LENGTH_LONG).show();
+			return true;
+		}
 		HashMap<String,String> title = (HashMap<String,String>)mAdapter.getChild(groupPosition, childPosition);
 		 Feed query = new Feed();
 		 query.setTitle(extractTitle(title.values().iterator().next()));
 		 Feed feed = rssAggregatorApplication.findFeed(query);
-		 Log.i("RssAggregatorActivity","group " + groupPosition + " childPosition " + childPosition +  " id " + id + 
+		 Log.i("RSSAGGREGATOR","group " + groupPosition + " childPosition " + childPosition +  " id " + id + 
 				 " title " + title  + " url " + feed.getUrl());
 		 rssAggregatorApplication.setFeedUrl(feed.getUrl());
 		 Intent intent = new Intent(this, WebViewActivity.class);
@@ -57,9 +63,10 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 		return str.substring(0,str.indexOf("\n"));
 	}
 
-	private void showRssFeeds() {
+	private void showRssFeeds(String calledFrom) {
+		//Log.d("RSSAGGREGATOR" , "showRssFeeds" + calledFrom);
 		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllRssFeeds();
-		Log.d("FEEDS","RSS FEEDS SIZE " +rssFeeds.size());
+		//Log.d("RSSAGGREGATOR","RSS FEEDS SIZE IN DB" +rssFeeds.size());
 		List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
 		List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
 		for(RssFeed rssFeed : rssFeeds ){
@@ -90,21 +97,30 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	}
 
 	private String getFormattedTime(Feed feed) {
-		StringBuffer sb = new StringBuffer();
+		String strDate;
 		if (feed.getDate() == null){
-			sb.append("");
+			strDate = "";
 		}else {
-			sb.append((feed.getDate()));
+			strDate = feed.getDate().toString();
 		}
-		return sb.toString();
+		
+		return strDate;
 	}
 
 	private void refreshRssFeeds() {
-		Log.i("FEEDS", "Refreshing feeds ");
+		Log.i("RSSAGGREGATOR", "Refreshing feeds ");
 		List<RssFeed> rssFeeds = rssAggregatorApplication.getAllRssFeedsFromSource();
+		/*for(RssFeed r1 : rssFeeds){
+			Log.i("RSSAGGREGATOR","Before Update feeds " + r1.getFeeds());
+		}*/
+		
 		rssAggregatorApplication.updateRssFeeds(rssFeeds);
-		Log.d("FEEDS", "Refreshed feeds ");
-		showRssFeeds();
+		//List<RssFeed> allRssFeedsAfterUpdate = rssAggregatorApplication.findAllRssFeeds();
+		//Log.i("RSSAGGREGATOR","After update size " + allRssFeedsAfterUpdate.size());
+		/*for(RssFeed r2 : allRssFeedsAfterUpdate){
+			Log.i("RSSAGGREGATOR","After Update feeds " + r2.getFeeds());
+		}*/
+		//Log.d("RSSAGGREGATOR", "Refreshed feeds ");
 	}
 
 	private RssAggregatorApplication getRssAggregatorApplication() {
@@ -112,7 +128,6 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 
 	}
 
-	/* Initiating Menu XML file (menu.xml) */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
@@ -128,7 +143,12 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_refresh:
-			refreshRssFeeds();
+			if (!rssAggregatorApplication.isOnline()){
+				Toast.makeText(this, "No INTERNET connection detected", Toast.LENGTH_LONG).show();
+				return true;
+			}
+			 Toast.makeText(this, "Refresh started", Toast.LENGTH_SHORT).show();
+			new DownloadFilesTask().execute(getApplicationContext());
 			return true;
 		case R.id.menu_add_rss_source:
 			Intent intent = new Intent(this, FeedSourceActivity.class);
@@ -138,4 +158,20 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	 private class DownloadFilesTask extends AsyncTask<Context, String, String> {
+	     protected String doInBackground(Context... context) {
+	    	 refreshRssFeeds();
+	    	 return null;
+	     }
+
+		@Override
+		protected void onPostExecute(String result) {
+			Toast.makeText(getApplicationContext(), "Refresh complete", Toast.LENGTH_SHORT).show();
+			showRssFeeds("OnDownload Complete");
+		}
+	     
+	     
+	 }
+
 }

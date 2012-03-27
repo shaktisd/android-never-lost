@@ -38,6 +38,6 @@ public class Feed {
 
 	@Override
 	public String toString() {
-		return "Feed [url=" + url + ", title=" + title + ", date=" + date + "]";
+		return "Feed [url=" + url + ", title=" + title + ", date=" + date + "]\n";
 	}
 }

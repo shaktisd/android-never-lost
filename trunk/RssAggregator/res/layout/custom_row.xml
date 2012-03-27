@@ -4,18 +4,22 @@
 <TwoLineListItem xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="2dip"
-    android:paddingBottom="2dip"
-    android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
     android:mode="twoLine"
+    android:typeface="serif" 
 >
 
     <TextView android:id="@android:id/text1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dip"
+        android:layout_marginTop="2dip"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" 
+        android:typeface="serif" 
+        android:drawableLeft="@drawable/arrow"
+        android:drawablePadding="4dip"
+        android:paddingTop="3dip"
     />
 
 </TwoLineListItem>

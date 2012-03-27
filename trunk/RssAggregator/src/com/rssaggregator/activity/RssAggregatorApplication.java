@@ -1,24 +1,35 @@
 package com.rssaggregator.activity;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.config.EmbeddedConfiguration;
-import com.rssaggregator.utils.RssFeedUtil;
+import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndEntryImpl;
+import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndFeed;
+import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException;
+import com.google.code.rome.android.repackaged.com.sun.syndication.io.SyndFeedInput;
+import com.google.code.rome.android.repackaged.com.sun.syndication.io.XmlReader;
 import com.rssaggregator.valueobjects.Feed;
 import com.rssaggregator.valueobjects.FeedSource;
 import com.rssaggregator.valueobjects.RssFeed;
 
 public class RssAggregatorApplication extends Application {
 	private EmbeddedObjectContainer db;
-	private RssFeedUtil rssFeedUtil;
 	private String feedUrl;
 	
 	
@@ -34,12 +45,11 @@ public class RssAggregatorApplication extends Application {
 		config.common().objectClass(FeedSource.class).objectField("feedSourceName").indexed(true);
 		if(db == null || db.close()){
 			String path = db4oDBFullPath(this);
-			Log.i("DBLOAD", "Opening DB : " + path);
+			Log.i("RSSAGGREGATOR", "Opening DB : " + path);
 			db = Db4oEmbedded.openFile(config, path);
-			Log.d("DBLOAD", "Finished Opening DB : " + path );
+			Log.d("RSSAGGREGATOR", "Finished Opening DB : " + path );
 		}
 		//init rssFeedUtil
-		rssFeedUtil = new RssFeedUtil();
 	}
 	
 	private String db4oDBFullPath(Context ctx) {
@@ -47,18 +57,22 @@ public class RssAggregatorApplication extends Application {
 	}
 	
 	public void updateRssFeeds(List<RssFeed> rssFeeds){
-		for(RssFeed rssFeed : rssFeeds){
-			RssFeed dummy = new RssFeed();
-			dummy.setFeedSource(rssFeed.getFeedSource());
-			ObjectSet<Object> result = db.queryByExample(dummy);
-			Log.d("RESULT","size " + result.size());
-			if (result.size() > 0){
-				RssFeed updateRssFeed = (RssFeed)result.next();	
-				db.delete(updateRssFeed);
-			}
-			db.store(rssFeed);
+		
+		List<RssFeed> oldRssFeed = db.queryByExample(RssFeed.class);
+		for(RssFeed deleteRssFeed : oldRssFeed){
+			db.delete(deleteRssFeed);
+		}
+		
+		List<Feed> oldFeed  = db.queryByExample(Feed.class);
+		for(Feed deleteFeed : oldFeed){
+			db.delete(deleteFeed);
 		}
 		db.commit();
+		
+		for(RssFeed rssFeed : rssFeeds){
+			db.store(rssFeed);
+			db.commit();
+		}
 	}
 	
 	public void updateFeedSource(FeedSource feedSource){
@@ -80,7 +94,19 @@ public class RssAggregatorApplication extends Application {
 	}
 
 	public List<RssFeed> findAllRssFeeds() {
-		return db.queryByExample(RssFeed.class);
+		List<RssFeed> resultSet = db.queryByExample(RssFeed.class);
+		for (RssFeed obj : resultSet) {
+			//Log.i("RSSAGGREGATOR", "Before sorting" + obj.getFeeds());
+			RssFeed rssFeed = (RssFeed) obj;
+			Collections.sort(rssFeed.getFeeds(), new Comparator<Feed>() {
+				public int compare(Feed o1, Feed o2) {
+					return o2.getDate().compareTo(o1.getDate());
+				}
+
+			});
+			//Log.i("RSSAGGREGATOR", "After sorting" + obj.getFeeds());
+		}
+		return resultSet;
 	}
 	
 	public List<FeedSource> findAllFeedSource(){
@@ -89,24 +115,16 @@ public class RssAggregatorApplication extends Application {
 	
 	@Override
 	public void onTerminate() {
-		Log.i("DBLOAD","Closing db connection");
+		Log.i("RSSAGGREGATOR","Closing db connection");
 		super.onTerminate();
 		if(db != null ){
 			db.close();	
 		}
-		Log.i("DBLOAD","Closed db connection");
+		Log.i("RSSAGGREGATOR","Closed db connection");
 	}
 	
 	public List<RssFeed> getAllRssFeedsFromSource(){
-		return rssFeedUtil.getRssFeeds(findAllFeedSource());
-		/*List<FeedSource> feedSources = new ArrayList<FeedSource>();
-		FeedSource feedSource1 = new FeedSource("NDTV","http://feeds.feedburner.com/NdtvNews-TopStories");
-		FeedSource feedSource2 = new FeedSource("TOI","http://timesofindia.indiatimes.com/rssfeedstopstories.cms");
-		FeedSource feedSource3 = new FeedSource("BLOG","http://feeds.feedburner.com/TheCodeOfANinja");
-		feedSources.add(feedSource1);
-		feedSources.add(feedSource2);
-		feedSources.add(feedSource3);
-		return rssFeedUtil.getRssFeeds(feedSources);*/
+		return getRssFeeds(findAllFeedSource());
 	}
 
 	public String getFeedUrl() {
@@ -116,4 +134,46 @@ public class RssAggregatorApplication extends Application {
 	public void setFeedUrl(String feedUrl) {
 		this.feedUrl = feedUrl;
 	}
+	
+	public boolean isOnline() {
+	    ConnectivityManager cm =  (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
+	}
+	
+	public List<RssFeed> getRssFeeds(List<FeedSource> feedSources){
+		List<RssFeed> rssFeeds = new ArrayList<RssFeed>();
+		
+		for(FeedSource feedSource : feedSources){
+			RssFeed rssFeed = new RssFeed();
+			rssFeed.setFeedSource(feedSource.getFeedSourceName());
+			try {
+				Log.i("RSSAGGREGATOR","Input url " + feedSource.getFeedSourceUrl());
+				SyndFeed syndFeed = new SyndFeedInput().build(new XmlReader(new URL(feedSource.getFeedSourceUrl())));
+				for(Object object : syndFeed.getEntries()){
+					Feed feed = new Feed();
+					feed.setTitle(((SyndEntryImpl) object).getTitle());
+					feed.setUrl(((SyndEntryImpl) object).getLink());
+					feed.setDate(((SyndEntryImpl) object).getPublishedDate() == null ? new Date() : ((SyndEntryImpl) object).getPublishedDate() );
+					rssFeed.getFeeds().add(feed);
+				}	
+				rssFeeds.add(rssFeed);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (FeedException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return rssFeeds;
+	}
+
 }
