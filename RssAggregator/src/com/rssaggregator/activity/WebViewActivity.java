@@ -1,7 +1,6 @@
 package com.rssaggregator.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -42,14 +41,6 @@ public class WebViewActivity extends Activity {
 			}
 		
 		});
-		/*webView.setWebChromeClient(new WebChromeClient() {
-			public void onProgressChanged(WebView view, int progress) {
-				activity.setProgress(progress * 1000);
-			}
-		});*/
-		
-		
-		
 		webView.loadUrl(url);
 	}
 
