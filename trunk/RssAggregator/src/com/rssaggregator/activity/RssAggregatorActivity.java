@@ -8,7 +8,6 @@ import java.util.Map;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +19,7 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 
+import com.google.ads.AdView;
 import com.rssaggregator.valueobjects.Feed;
 import com.rssaggregator.valueobjects.RssFeed;
 
@@ -28,17 +28,20 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	/** Called when the activity is first created. */
 	RssAggregatorApplication rssAggregatorApplication;
 	private SimpleExpandableListAdapter mAdapter;
+	/** The view to show the ad. */
+	  private AdView adView;
+
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.newmain);
 		rssAggregatorApplication = getRssAggregatorApplication();
 		showRssFeeds("onCreate");
 		getExpandableListView().setOnChildClickListener(this);
 	}
-	
+
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,int childPosition, long id) {
 		if (!rssAggregatorApplication.isOnline()){
@@ -52,7 +55,9 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 		 Log.i("RSSAGGREGATOR","group " + groupPosition + " childPosition " + childPosition +  " id " + id + 
 				 " title " + title  + " url " + feed.getUrl());
 		 rssAggregatorApplication.setFeedUrl(feed.getUrl());
-		 Intent intent = new Intent(this, WebViewActivity.class);
+		 rssAggregatorApplication.setFeedDescription(feed.getDescription());
+		 //Intent intent = new Intent(this, WebViewActivity.class);
+		 Intent intent = new Intent(this, FeedDescriptionActivity.class);
 		 startActivity(intent);
 		 
 		return true;
@@ -64,8 +69,8 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	}
 
 	private void showRssFeeds(String calledFrom) {
-		//Log.d("RSSAGGREGATOR" , "showRssFeeds" + calledFrom);
-		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllRssFeeds();
+		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllFeeds();
+		
 		//Log.d("RSSAGGREGATOR","RSS FEEDS SIZE IN DB" +rssFeeds.size());
 		List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
 		List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
@@ -110,17 +115,7 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	private void refreshRssFeeds() {
 		Log.i("RSSAGGREGATOR", "Refreshing feeds ");
 		List<RssFeed> rssFeeds = rssAggregatorApplication.getAllRssFeedsFromSource();
-		/*for(RssFeed r1 : rssFeeds){
-			Log.i("RSSAGGREGATOR","Before Update feeds " + r1.getFeeds());
-		}*/
-		
-		rssAggregatorApplication.updateRssFeeds(rssFeeds);
-		//List<RssFeed> allRssFeedsAfterUpdate = rssAggregatorApplication.findAllRssFeeds();
-		//Log.i("RSSAGGREGATOR","After update size " + allRssFeedsAfterUpdate.size());
-		/*for(RssFeed r2 : allRssFeedsAfterUpdate){
-			Log.i("RSSAGGREGATOR","After Update feeds " + r2.getFeeds());
-		}*/
-		//Log.d("RSSAGGREGATOR", "Refreshed feeds ");
+		rssAggregatorApplication.storeFeeds(rssFeeds);
 	}
 
 	private RssAggregatorApplication getRssAggregatorApplication() {
@@ -173,5 +168,18 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	     
 	     
 	 }
+	 
+	 /** Called before the activity is destroyed. */
+	  @Override
+	  public void onDestroy() {
+	    // Destroy the AdView.
+	    if (adView != null) {
+	      adView.destroy();
+	    }
+
+	    super.onDestroy();
+	  }
+	 
+	
 
 }

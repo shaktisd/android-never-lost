@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Application;
 import android.content.Context;
@@ -31,6 +33,8 @@ import com.rssaggregator.valueobjects.RssFeed;
 public class RssAggregatorApplication extends Application {
 	private EmbeddedObjectContainer db;
 	private String feedUrl;
+	private String feedDescription;
+	
 	
 	
 	public void onCreate() {
@@ -40,8 +44,7 @@ public class RssAggregatorApplication extends Application {
 
 	private void setUpApplication() {
 		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
-		config.common().objectClass(RssFeed.class).objectField("feedSource").indexed(true);
-		config.common().objectClass(Feed.class).objectField("url").indexed(true);
+		config.common().objectClass(Feed.class).objectField("title").indexed(true);
 		config.common().objectClass(FeedSource.class).objectField("feedSourceName").indexed(true);
 		if(db == null || db.close()){
 			String path = db4oDBFullPath(this);
@@ -56,6 +59,23 @@ public class RssAggregatorApplication extends Application {
 		return ctx.getDir("data", 0) + "/" + "rss.db4o";
 	}
 	
+	public void storeFeeds(List<RssFeed> rssFeeds){
+		for(RssFeed rssFeed : rssFeeds){
+			for(Feed feed : rssFeed.getFeeds()){
+				Feed queryFeed = new Feed();
+				queryFeed.setTitle(feed.getTitle());
+				queryFeed.setFeedSource(feed.getFeedSource());
+				List<Feed> resultFeed = db.queryByExample(queryFeed);
+				if ( resultFeed.size() == 0){
+					Log.d("RSSAGGREGATOR","Storing feed " + feed.getFeedSource() + " " + feed.getTitle());
+					db.store(feed);
+					db.commit();
+				}
+			}
+		}
+	}
+	
+	@Deprecated
 	public void updateRssFeeds(List<RssFeed> rssFeeds){
 		
 		List<RssFeed> oldRssFeed = db.queryByExample(RssFeed.class);
@@ -92,7 +112,7 @@ public class RssAggregatorApplication extends Application {
 	public Feed findFeed(Feed feed){
 		return (Feed)db.queryByExample(feed).get(0);
 	}
-
+	@Deprecated
 	public List<RssFeed> findAllRssFeeds() {
 		List<RssFeed> resultSet = db.queryByExample(RssFeed.class);
 		for (RssFeed obj : resultSet) {
@@ -107,6 +127,32 @@ public class RssAggregatorApplication extends Application {
 			//Log.i("RSSAGGREGATOR", "After sorting" + obj.getFeeds());
 		}
 		return resultSet;
+	}
+	
+	public List<RssFeed> findAllFeeds(){
+		List<Feed> feedResult = db.queryByExample(Feed.class);
+		Map<String,RssFeed> mapFeedSourceAndFeed = new HashMap<String,RssFeed>();
+		for(Feed feed : feedResult){
+			RssFeed rssFeed = mapFeedSourceAndFeed.get(feed.getFeedSource());
+			if (rssFeed == null ){
+				rssFeed = new RssFeed();
+				rssFeed.setFeedSource(feed.getFeedSource());
+				mapFeedSourceAndFeed.put(feed.getFeedSource(), rssFeed);
+			}
+			rssFeed.getFeeds().add(feed);
+		}
+		List<RssFeed> returnValue = new ArrayList<RssFeed>();
+		for(RssFeed rssFeedElement : mapFeedSourceAndFeed.values()){
+			Collections.sort(rssFeedElement.getFeeds(), new Comparator<Feed>() {
+				public int compare(Feed o1, Feed o2) {
+					return o2.getDate().compareTo(o1.getDate());
+				}
+
+			});
+			returnValue.add(rssFeedElement);
+		}
+		
+		return returnValue;
 	}
 	
 	public List<FeedSource> findAllFeedSource(){
@@ -151,13 +197,16 @@ public class RssAggregatorApplication extends Application {
 			RssFeed rssFeed = new RssFeed();
 			rssFeed.setFeedSource(feedSource.getFeedSourceName());
 			try {
-				Log.i("RSSAGGREGATOR","Input url " + feedSource.getFeedSourceUrl());
+				Log.i("RSSAGGREGATOR", " Adding feed from web for source " + rssFeed.getFeedSource());
 				SyndFeed syndFeed = new SyndFeedInput().build(new XmlReader(new URL(feedSource.getFeedSourceUrl())));
 				for(Object object : syndFeed.getEntries()){
 					Feed feed = new Feed();
-					feed.setTitle(((SyndEntryImpl) object).getTitle());
-					feed.setUrl(((SyndEntryImpl) object).getLink());
-					feed.setDate(((SyndEntryImpl) object).getPublishedDate() == null ? new Date() : ((SyndEntryImpl) object).getPublishedDate() );
+					SyndEntryImpl rssEntry = (SyndEntryImpl) object;
+					feed.setFeedSource(feedSource.getFeedSourceName());
+					feed.setTitle(rssEntry.getTitle());
+					feed.setUrl(rssEntry.getLink());
+					feed.setDate(rssEntry.getPublishedDate() == null ? new Date() : ((SyndEntryImpl) object).getPublishedDate() );
+					feed.setDescription(rssEntry.getDescription().getValue());
 					rssFeed.getFeeds().add(feed);
 				}	
 				rssFeeds.add(rssFeed);
@@ -176,4 +225,11 @@ public class RssAggregatorApplication extends Application {
 		return rssFeeds;
 	}
 
+	public String getFeedDescription() {
+		return feedDescription;
+	}
+
+	public void setFeedDescription(String feedDescription) {
+		this.feedDescription = feedDescription;
+	}
 }

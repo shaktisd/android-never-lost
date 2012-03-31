@@ -24,7 +24,6 @@ public class FeedSourceActivity extends Activity {
 
 	private void registerClickListenersToButtons() {
 		saveRssSourceButton.setOnClickListener(new View.OnClickListener(){
-			@Override
 			public void onClick(View arg0) {
 				
 				FeedSource feedSource = new FeedSource(rssSourceText.getText().toString(),rssUrlText.getText().toString());
