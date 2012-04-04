@@ -10,6 +10,9 @@ import android.webkit.WebViewClient;
 public class WebViewActivity extends Activity {
 
 
+	private static final String LOADING = "Loading";
+
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
@@ -20,14 +23,14 @@ public class WebViewActivity extends Activity {
 		getWindow().setFeatureInt( Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 		webView.getSettings().setJavaScriptEnabled(true);
 		final Activity activity = this;
-		activity.setTitle("");
+		activity.setTitle(LOADING);
 		webView.setWebChromeClient(new WebChromeClient() {
 		    public void onProgressChanged(WebView view, int progress) {
 		        activity.setProgress(progress * 100);
 		        if(progress == 100 ){
 		        	 activity.setTitle(R.string.app_name);
-		        }else if (activity.getTitle() != "" ){
-		        	activity.setTitle("");
+		        }else if (activity.getTitle() != LOADING ){
+		        	activity.setTitle(LOADING);
 		        }
 		    }
 		});

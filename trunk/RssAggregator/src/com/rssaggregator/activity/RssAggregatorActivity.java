@@ -24,12 +24,14 @@ import com.rssaggregator.valueobjects.Feed;
 import com.rssaggregator.valueobjects.RssFeed;
 
 public class RssAggregatorActivity extends ExpandableListActivity {
+	private static final String NOT_READ = "N";
+	private static final String READ = "Y";
 	private static final String NAME = "NAME";
 	/** Called when the activity is first created. */
 	RssAggregatorApplication rssAggregatorApplication;
 	private SimpleExpandableListAdapter mAdapter;
 	/** The view to show the ad. */
-	  private AdView adView;
+	private AdView adView;
 
 
 
@@ -40,6 +42,7 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 		rssAggregatorApplication = getRssAggregatorApplication();
 		showRssFeeds("onCreate");
 		getExpandableListView().setOnChildClickListener(this);
+		getExpandableListView().expandGroup(0);
 	}
 
 	@Override
@@ -52,6 +55,9 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 		 Feed query = new Feed();
 		 query.setTitle(extractTitle(title.values().iterator().next()));
 		 Feed feed = rssAggregatorApplication.findFeed(query);
+		 feed.setFeedRead(true);
+		 rssAggregatorApplication.saveFeed(feed);
+		 
 		 Log.i("RSSAGGREGATOR","group " + groupPosition + " childPosition " + childPosition +  " id " + id + 
 				 " title " + title  + " url " + feed.getUrl());
 		 rssAggregatorApplication.setFeedUrl(feed.getUrl());
@@ -69,7 +75,7 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 	}
 
 	private void showRssFeeds(String calledFrom) {
-		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllFeeds();
+		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllFeedsWithFeedSource(rssAggregatorApplication.getFeedSourceName());
 		
 		//Log.d("RSSAGGREGATOR","RSS FEEDS SIZE IN DB" +rssFeeds.size());
 		List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
@@ -83,24 +89,32 @@ public class RssAggregatorActivity extends ExpandableListActivity {
 			for (Feed feed : rssFeed.getFeeds()) {
 				Map<String, String> curChildMap = new HashMap<String, String>();
 				children.add(curChildMap);
-				curChildMap.put(NAME, feed.getTitle() + "\n" + getFormattedTime(feed));
+				curChildMap.put(NAME, feed.getTitle() + "\n" + getFormattedTime(feed) );
 			}
 			childData.add(children);
 			
 		}
 		mAdapter = new SimpleExpandableListAdapter(this, 
 				groupData,
-				android.R.layout.simple_expandable_list_item_1, 
+				R.layout.custom_expandable_list,
 				new String[] {NAME}, 
-				new int[] { android.R.id.text1}, 
+				new int[] { R.id.customtext1}, 
 				childData,
 				R.layout.custom_row,
 				new String[] {NAME }, 
-				new int[] { android.R.id.text1 });
+				new int[] { R.id.customrowtext1});
 		setListAdapter(mAdapter);
 
 	}
-
+	
+	private String isFeedRead(boolean isFeedRead){
+		if (isFeedRead){
+			return READ;
+		}else {
+			return NOT_READ;
+		}
+	}
+	
 	private String getFormattedTime(Feed feed) {
 		String strDate;
 		if (feed.getDate() == null){
