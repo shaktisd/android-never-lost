@@ -10,16 +10,16 @@
     android:typeface="serif" 
 >
 
-    <TextView android:id="@android:id/text1"
+    <TextView android:id="@+id/customrowtext1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dip"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" 
         android:typeface="serif" 
-        android:drawableLeft="@drawable/arrow"
+        android:drawableLeft="@drawable/rss"
         android:drawablePadding="4dip"
-        android:paddingTop="3dip"
+        android:paddingTop="2dip"
     />
 
 </TwoLineListItem>

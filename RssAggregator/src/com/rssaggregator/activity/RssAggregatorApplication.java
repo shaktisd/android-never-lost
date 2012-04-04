@@ -26,6 +26,7 @@ import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.Syn
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException;
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.SyndFeedInput;
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.XmlReader;
+import com.rssaggregator.valueobjects.Category;
 import com.rssaggregator.valueobjects.Feed;
 import com.rssaggregator.valueobjects.FeedSource;
 import com.rssaggregator.valueobjects.RssFeed;
@@ -34,6 +35,7 @@ public class RssAggregatorApplication extends Application {
 	private EmbeddedObjectContainer db;
 	private String feedUrl;
 	private String feedDescription;
+	private String feedSourceName;
 	
 	
 	
@@ -46,6 +48,8 @@ public class RssAggregatorApplication extends Application {
 		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
 		config.common().objectClass(Feed.class).objectField("title").indexed(true);
 		config.common().objectClass(FeedSource.class).objectField("feedSourceName").indexed(true);
+		config.common().objectClass(Category.class).objectField("categoryName").indexed(true);
+		
 		if(db == null || db.close()){
 			String path = db4oDBFullPath(this);
 			Log.i("RSSAGGREGATOR", "Opening DB : " + path);
@@ -112,6 +116,17 @@ public class RssAggregatorApplication extends Application {
 	public Feed findFeed(Feed feed){
 		return (Feed)db.queryByExample(feed).get(0);
 	}
+	
+	public void saveFeed(Feed feed){
+		db.store(feed);
+		db.commit();
+	}
+	
+	public void save(Object object){
+		db.store(object);
+		db.commit();
+	}
+	
 	@Deprecated
 	public List<RssFeed> findAllRssFeeds() {
 		List<RssFeed> resultSet = db.queryByExample(RssFeed.class);
@@ -127,6 +142,11 @@ public class RssAggregatorApplication extends Application {
 			//Log.i("RSSAGGREGATOR", "After sorting" + obj.getFeeds());
 		}
 		return resultSet;
+	}
+	
+	public List<Category> findAllCategory(){
+		List<Category> categoryResult = db.queryByExample(Category.class);
+		return categoryResult;
 	}
 	
 	public List<RssFeed> findAllFeeds(){
@@ -153,6 +173,35 @@ public class RssAggregatorApplication extends Application {
 		}
 		
 		return returnValue;
+	}
+	
+	public List<RssFeed> findAllFeedsWithFeedSource(String feedSourceName){
+		Feed queryFeed = new Feed();
+		queryFeed.setFeedSource(feedSourceName);
+		List<Feed> feedResult = db.queryByExample(queryFeed);
+		Map<String,RssFeed> mapFeedSourceAndFeed = new HashMap<String,RssFeed>();
+		for(Feed feed : feedResult){
+			RssFeed rssFeed = mapFeedSourceAndFeed.get(feed.getFeedSource());
+			if (rssFeed == null ){
+				rssFeed = new RssFeed();
+				rssFeed.setFeedSource(feed.getFeedSource());
+				mapFeedSourceAndFeed.put(feed.getFeedSource(), rssFeed);
+			}
+			rssFeed.getFeeds().add(feed);
+		}
+		List<RssFeed> returnValue = new ArrayList<RssFeed>();
+		for(RssFeed rssFeedElement : mapFeedSourceAndFeed.values()){
+			Collections.sort(rssFeedElement.getFeeds(), new Comparator<Feed>() {
+				public int compare(Feed o1, Feed o2) {
+					return o2.getDate().compareTo(o1.getDate());
+				}
+
+			});
+			returnValue.add(rssFeedElement);
+		}
+		
+		return returnValue;
+	
 	}
 	
 	public List<FeedSource> findAllFeedSource(){
@@ -232,4 +281,13 @@ public class RssAggregatorApplication extends Application {
 	public void setFeedDescription(String feedDescription) {
 		this.feedDescription = feedDescription;
 	}
+
+	public String getFeedSourceName() {
+		return feedSourceName;
+	}
+
+	public void setFeedSourceName(String feedSourceName) {
+		this.feedSourceName = feedSourceName;
+	}
+	
 }
