@@ -2,35 +2,49 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:id="@+id/topLayout"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="fill_parent" >
 
     <LinearLayout
         android:id="@+id/linearlayoutlistview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/ad_holder">
 
-        <ExpandableListView
-            android:id="@+id/android:list"
+        <ListView
+            android:id="@+id/listView1"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:typeface="serif" />
+            android:layout_height="wrap_content"
+        	android:layout_marginTop="2dip"
+        	android:textAppearance="?android:attr/textAppearanceSmall"
+        	android:textStyle="bold" 
+        	android:typeface="serif" 
+        	android:drawableLeft="@drawable/rss"
+        	android:drawablePadding="4dip"
+        	android:paddingTop="2dip" 
+            >
+        </ListView>
+
+       
     </LinearLayout>
 
     <!-- Ad Placeholder -->
-
-    <com.google.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
+     <LinearLayout
+        android:id="@+id/ad_holder"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="a14f6d8a78d3ac0"
-        ads:loadAdOnCreate="true"
-        ads:testDevices = "TEST_EMULATOR, CF95DC53F383F9A836FD749F3EF439CD"
-        >
-    </com.google.ads.AdView>
+        android:gravity="bottom"
+    android:layout_alignParentBottom="true">
+     <com.google.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="a14f6d8a78d3ac0"
+            ads:loadAdOnCreate="true"
+            ads:testDevices="TEST_EMULATOR, CF95DC53F383F9A836FD749F3EF439CD" >
+        </com.google.ads.AdView>
+         </LinearLayout>
 
 </RelativeLayout>
