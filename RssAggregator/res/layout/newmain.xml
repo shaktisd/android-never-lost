@@ -13,14 +13,13 @@
         android:layout_above="@+id/ad_holder">
 
         <ListView
-            android:id="@+id/listView1"
+            android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
         	android:layout_marginTop="2dip"
         	android:textAppearance="?android:attr/textAppearanceSmall"
         	android:textStyle="bold" 
         	android:typeface="serif" 
-        	android:drawableLeft="@drawable/rss"
         	android:drawablePadding="4dip"
         	android:paddingTop="2dip" 
             >

@@ -4,95 +4,170 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ads.AdView;
 import com.rssaggregator.valueobjects.Feed;
 import com.rssaggregator.valueobjects.RssFeed;
 
-public class RssAggregatorActivity extends Activity {
-	private static final String NOT_READ = "N";
-	private static final String READ = "Y";
+public class RssAggregatorActivity extends ListActivity {
+	private static final char NOT_READ = 'N';
+	private static final char READ = 'Y';
 	/** Called when the activity is first created. */
 	RssAggregatorApplication rssAggregatorApplication;
 	/** The view to show the ad. */
 	private AdView adView;
-	private ListView listView;
-	private ArrayAdapter<String> listAdapter;
+	private List<String> rssFeeds ;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.newmain);
 		rssAggregatorApplication = getRssAggregatorApplication();
 		this.setTitle(rssAggregatorApplication.getFeedSourceName());
-		final List<String> rssFeeds = getRssFeeds();
-		listView = (ListView) findViewById(R.id.listView1);
-		listAdapter = new ArrayAdapter<String>(this,R.layout.list_item, rssFeeds);
-		listView.setAdapter(listAdapter);
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		rssFeeds =  getRssFeeds();
+		setListAdapter(new EfficientAdapter(this));
+	}
+	
+	private class EfficientAdapter extends BaseAdapter {
+		private LayoutInflater mInflater;
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				if (!rssAggregatorApplication.isOnline()) {
-					Toast.makeText(getApplicationContext(),
-							"No INTERNET connection detected",
-							Toast.LENGTH_LONG).show();
-				}
+		public EfficientAdapter(Context context) {
+			// Cache the LayoutInflate to avoid asking for a new one each time.
+            mInflater = LayoutInflater.from(context);
+            // Icons bound to the rows.
+		}
 
-				String title = rssFeeds.get(position);
-				Feed query = new Feed();
-				query.setTitle(extractTitle(title));
-				Feed feed = rssAggregatorApplication.findFeed(query);
-				feed.setFeedRead(true);
-				rssAggregatorApplication.saveFeed(feed);
+		@Override
+		public int getCount() {
+			return rssFeeds != null ? rssFeeds.size() : 0;
+		}
 
-				Log.i("RSSAGGREGATOR", "position " + position + " title " + title + " url " + feed.getUrl());
-				rssAggregatorApplication.setFeedUrl(feed.getUrl());
-				rssAggregatorApplication.setFeedDescription(feed.getDescription());
-				Intent intent = new Intent(getApplicationContext(),FeedDescriptionActivity.class);
-				startActivity(intent);
+		@Override
+		public Object getItem(int position) {
+			return position;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.list_item, null);
+				holder = new ViewHolder();
+				holder.text = (TextView) convertView.findViewById(R.id.customitemtext1);
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
 			}
+			String itemText = rssFeeds.get(position);
+			if (isFeedRead(itemText)){
+				holder.text.setTypeface(Typeface.MONOSPACE);
+				holder.text.setTextColor(R.color.readfeed);
+			}else if( holder.text.getTypeface().equals(Typeface.MONOSPACE)) {
+				convertView = mInflater.inflate(R.layout.list_item, null);
+				holder = new ViewHolder();
+				holder.text = (TextView) convertView.findViewById(R.id.customitemtext1);
+				convertView.setTag(holder);
+			}
+			holder.text.setText(itemText);
+			convertView.setOnClickListener(new OnItemClickListener(position,convertView));
+			return convertView;
+		}
+		
+		private class OnItemClickListener implements OnClickListener{           
+	        private int position;
+	        View convertView ;
+	        OnItemClickListener(int position, View convertView){
+	                this.position = position;
+	                this.convertView = convertView;
+	        }
+	        @Override
+	        public void onClick(View listItemView) {
+	                Log.v("RSSAGGREGATOR", "onItemClick at position" + position);
+	    			if (!rssAggregatorApplication.isOnline()) {Toast.makeText(getApplicationContext(),"No INTERNET connection detected",Toast.LENGTH_LONG).show();}
+	    			
+	    			ViewHolder holder = (ViewHolder) convertView.getTag();
+	    			holder.text.setTypeface(Typeface.MONOSPACE);
+	    			holder.text.setTextColor(R.color.readfeed);
+	    			convertView.setTag(holder);
+	    			
+	    			String title = rssFeeds.get(position);
+	    			Feed query = new Feed();
+	    			query.setTitle(extractTitle(title));
+	    			query.setFeedSource(rssAggregatorApplication.getFeedSourceName());
+	    			Feed feed = rssAggregatorApplication.findFeed(query);
+	    			feed.setFeedRead(true);
+	    			rssAggregatorApplication.saveFeed(feed);
+	    			rssFeeds.set(position, markFeedAsRead(title));
 
-		});
+	    			Log.i("RSSAGGREGATOR", "position " + position + " title " + title + " url " + feed.getUrl());
+	    			rssAggregatorApplication.setFeedUrl(feed.getUrl());
+	    			rssAggregatorApplication.setFeedDescription(feed.getDescription());
+	    			Intent intent = new Intent(getApplicationContext(),FeedDescriptionActivity.class);
+	    			startActivity(intent);
+	    			                
+	        }
+			private String markFeedAsRead(String title) {
+				return title.substring(0, title.length()-2) + READ;
+			}               
+	    }
+
+		
+		private boolean isFeedRead(String itemText) {
+			if(itemText.charAt(itemText.length()-1) == READ){
+				return true;
+			}
+			return false;
+		}
+
+		class ViewHolder {
+            TextView text;
+        }
+
+		
 	}
 
 	private String extractTitle(String str) {
 		return str.substring(0, str.indexOf("\n"));
 	}
+	
 
 	private List<String> getRssFeeds() {
 		List<RssFeed> rssFeeds = rssAggregatorApplication.findAllFeedsWithFeedSource(rssAggregatorApplication.getFeedSourceName());
 		List<String> feedTitles = new ArrayList<String>();
 		if ( rssFeeds.size() > 0 ){
 			for (Feed feed : rssFeeds.get(0).getFeeds()) {
-				feedTitles.add(feed.getTitle() + "\n" + getFormattedTime(feed));
+				feedTitles.add(feed.getTitle() + "\n" + getFormattedTime(feed) + 
+						(feed.isFeedRead() == true ? 'Y' : 'N'));
 			}	
 		}
 		
 		return feedTitles;
-	}
-
-	private String isFeedRead(boolean isFeedRead) {
-		if (isFeedRead) {
-			return READ;
-		} else {
-			return NOT_READ;
-		}
 	}
 
 	private String getFormattedTime(Feed feed) {
@@ -110,7 +185,6 @@ public class RssAggregatorActivity extends Activity {
 		Log.i("RSSAGGREGATOR", "Refreshing feeds ");
 		List<RssFeed> rssFeeds = rssAggregatorApplication.getAllRssFeedsFromSource();
 		rssAggregatorApplication.storeFeeds(rssFeeds);
-		listAdapter.notifyDataSetChanged();
 	}
 
 	private RssAggregatorApplication getRssAggregatorApplication() {
@@ -141,10 +215,10 @@ public class RssAggregatorActivity extends Activity {
 			Toast.makeText(this, "Refresh started", Toast.LENGTH_SHORT).show();
 			new DownloadFilesTask().execute(getApplicationContext());
 			return true;
-		case R.id.menu_add_rss_source:
+		/*case R.id.menu_add_rss_source:
 			Intent intent = new Intent(this, FeedSourceActivity.class);
 			startActivity(intent);
-			return true;
+			return true;*/
 		default:
 			return super.onOptionsItemSelected(item);
 		}

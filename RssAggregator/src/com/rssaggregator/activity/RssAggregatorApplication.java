@@ -46,6 +46,7 @@ public class RssAggregatorApplication extends Application {
 
 	private void setUpApplication() {
 		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
+		config.common().objectClass(Feed.class).objectField("feedSource").indexed(true);
 		config.common().objectClass(FeedSource.class).objectField("feedSourceName").indexed(true);
 		config.common().objectClass(Category.class).objectField("categoryName").indexed(true);
 		

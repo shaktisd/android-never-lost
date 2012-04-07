@@ -106,10 +106,10 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			 Toast.makeText(this, "Refresh started", Toast.LENGTH_SHORT).show();
 			new DownloadFilesTask().execute(getApplicationContext());
 			return true;
-		case R.id.menu_add_rss_source:
+		/*case R.id.menu_add_rss_source:
 			Intent intent = new Intent(this, FeedSourceActivity.class);
 			startActivity(intent);
-			return true;			
+			return true;	*/		
 		default:
 			return super.onOptionsItemSelected(item);
 		}
