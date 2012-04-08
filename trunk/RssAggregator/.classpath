@@ -3,7 +3,7 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="lib/android-rome-feed-reader-1.0.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/db4o-8.0.184.15484-core-java5.jar"/>
+	<classpathentry exported="true" kind="lib" path="E:/Android/projects/RssAggregator/lib/db4o-8.0.236.16058-core-java5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jdom-1.0.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
