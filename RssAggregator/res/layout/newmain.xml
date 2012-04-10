@@ -9,33 +9,32 @@
         android:id="@+id/linearlayoutlistview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_above="@+id/ad_holder">
+        android:layout_above="@+id/ad_holder"
+        android:orientation="vertical" >
 
         <ListView
             android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-        	android:layout_marginTop="2dip"
-        	android:textAppearance="?android:attr/textAppearanceSmall"
-        	android:textStyle="bold" 
-        	android:typeface="serif" 
-        	android:drawablePadding="4dip"
-        	android:paddingTop="2dip" 
-            >
+            android:layout_marginTop="2dip"
+            android:drawablePadding="4dip"
+            android:paddingTop="2dip"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold"
+            android:typeface="serif" >
         </ListView>
-
-       
     </LinearLayout>
 
     <!-- Ad Placeholder -->
-     <LinearLayout
+
+    <LinearLayout
         android:id="@+id/ad_holder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
-    android:layout_alignParentBottom="true">
-     <com.google.ads.AdView
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom" >
+
+        <com.google.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,6 +43,6 @@
             ads:loadAdOnCreate="true"
             ads:testDevices="TEST_EMULATOR, CF95DC53F383F9A836FD749F3EF439CD" >
         </com.google.ads.AdView>
-         </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
