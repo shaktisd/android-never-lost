@@ -1,27 +1,20 @@
 package com.rssaggregator.activity;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +30,7 @@ public class RssAggregatorActivity extends ListActivity {
 	/** The view to show the ad. */
 	private AdView adView;
 	private List<String> rssFeeds ;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -183,62 +176,12 @@ public class RssAggregatorActivity extends ListActivity {
 		return strDate;
 	}
 
-	private void refreshRssFeeds() {
-		Log.i("RSSAGGREGATOR", "Refreshing feeds ");
-		List<RssFeed> rssFeeds = rssAggregatorApplication.getAllRssFeedsFromSource();
-		rssAggregatorApplication.storeFeeds(rssFeeds);
-	}
 
 	private RssAggregatorApplication getRssAggregatorApplication() {
 		return (RssAggregatorApplication) getApplication();
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.layout.menu, menu);
-		return true;
-	}
-
-	/**
-	 * Event Handling for Individual menu item selected Identify single menu
-	 * item by it's id
-	 * */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_refresh:
-			if (!rssAggregatorApplication.isOnline()) {
-				Toast.makeText(this, "No INTERNET connection detected",
-						Toast.LENGTH_LONG).show();
-				return true;
-			}
-			Toast.makeText(this, "Refresh started", Toast.LENGTH_SHORT).show();
-			new DownloadFilesTask().execute(getApplicationContext());
-			return true;
-		/*case R.id.menu_add_rss_source:
-			Intent intent = new Intent(this, FeedSourceActivity.class);
-			startActivity(intent);
-			return true;*/
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	private class DownloadFilesTask extends AsyncTask<Context, String, String> {
-		protected String doInBackground(Context... context) {
-			refreshRssFeeds();
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			Toast.makeText(getApplicationContext(), "Refresh complete",
-					Toast.LENGTH_SHORT).show();
-		}
-
-	}
 
 	/** Called before the activity is destroyed. */
 	@Override
