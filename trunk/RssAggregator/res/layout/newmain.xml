@@ -27,22 +27,26 @@
 
     <!-- Ad Placeholder -->
 
-    <LinearLayout
-        android:id="@+id/ad_holder"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="bottom" >
+    
+    <RelativeLayout
+    android:id="@+id/ad_holder"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:gravity="bottom" >
 
-        <com.google.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="a14f6d8a78d3ac0"
-            ads:loadAdOnCreate="true"
-            ads:testDevices="TEST_EMULATOR, CF95DC53F383F9A836FD749F3EF439CD" >
-        </com.google.ads.AdView>
-    </LinearLayout>
+    <com.google.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="a14f6d8a78d3ac0"
+        ads:loadAdOnCreate="true"
+        ads:testDevices="TEST_EMULATOR, CF95DC53F383F9A836FD749F3EF439CD" >
+    </com.google.ads.AdView>
+
+</RelativeLayout>
+    
 
 </RelativeLayout>
