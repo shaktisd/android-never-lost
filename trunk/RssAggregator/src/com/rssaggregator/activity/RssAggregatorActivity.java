@@ -33,13 +33,14 @@ public class RssAggregatorActivity extends ListActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.newmain);
 		rssAggregatorApplication = getRssAggregatorApplication();
 		this.setTitle(rssAggregatorApplication.getFeedSourceName());
+		EfficientAdapter efficientAdapter = new EfficientAdapter(RssAggregatorActivity.this);
+		setListAdapter(efficientAdapter);
 		rssFeeds =  getRssFeeds();
-		setListAdapter(new EfficientAdapter(this));
+		rssAggregatorApplication.getProgressDialog().dismiss();
 	}
 	
 	private class EfficientAdapter extends BaseAdapter {

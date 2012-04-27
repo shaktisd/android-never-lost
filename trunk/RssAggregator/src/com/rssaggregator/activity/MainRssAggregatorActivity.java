@@ -10,6 +10,7 @@ import android.app.ExpandableListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -74,6 +75,8 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 		HashMap<String,String> feedSourceDetails = (HashMap<String,String>)mAdapter.getChild(groupPosition, childPosition);
 		String feedSource = (String)feedSourceDetails.values().iterator().next();
 		rssAggregatorApplication.setFeedSourceName(feedSource);
+		ProgressDialog progressDialog = ProgressDialog.show(MainRssAggregatorActivity.this, "", "Loading...");
+		rssAggregatorApplication.setProgressDialog(progressDialog);
 		Intent intent = new Intent(this, RssAggregatorActivity.class);
 		startActivity(intent);
 		return true;
