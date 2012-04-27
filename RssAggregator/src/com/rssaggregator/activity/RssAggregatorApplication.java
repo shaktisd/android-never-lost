@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -36,6 +37,7 @@ public class RssAggregatorApplication extends Application {
 	private String feedUrl;
 	private String feedDescription;
 	private String feedSourceName;
+	private ProgressDialog progressDialog;
 	
 	
 	
@@ -289,5 +291,15 @@ public class RssAggregatorApplication extends Application {
 	public void setFeedSourceName(String feedSourceName) {
 		this.feedSourceName = feedSourceName;
 	}
+
+	public ProgressDialog getProgressDialog() {
+		return progressDialog;
+	}
+
+	public void setProgressDialog(ProgressDialog progressDialog) {
+		this.progressDialog = progressDialog;
+	}
+	
+	
 	
 }
