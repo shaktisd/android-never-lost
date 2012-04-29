@@ -14,20 +14,22 @@ public class FeedDescriptionActivity extends Activity {
 		setContentView(R.layout.webview);
 		WebView webView = (WebView)findViewById(R.id.webview);;
 		webView.getSettings().setJavaScriptEnabled(true);
-		
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				getRssAggregatorApplication().setFeedUrl(url);
 				Intent intent = new Intent (getBaseContext(),WebViewActivity.class);
 				startActivity(intent);
-				//view.loadUrl(url);
 				return true;
 			}
 		
 		});
 		
 		String feedDescription = getRssAggregatorApplication().getFeedDescription();
-		String html = "<br><a href=\"" + getRssAggregatorApplication().getFeedUrl()  +" \">Visit Site</a> <br>";
+		String html = "<html> <head> " +
+				"<style type=\"text/css\"> body { font-family: serif; } </style>" +
+				" </head><br><a href=\"" + getRssAggregatorApplication().getFeedUrl()  +" \">Visit Site</a> <br> </html>";
+		this.setTitle(getRssAggregatorApplication().getFeedSourceName());
 		webView.loadData(html+feedDescription, "text/html", null);
 		
 	}
