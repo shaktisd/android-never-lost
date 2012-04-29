@@ -81,26 +81,6 @@ public class RssAggregatorApplication extends Application {
 		}
 	}
 	
-	@Deprecated
-	public void updateRssFeeds(List<RssFeed> rssFeeds){
-		
-		List<RssFeed> oldRssFeed = db.queryByExample(RssFeed.class);
-		for(RssFeed deleteRssFeed : oldRssFeed){
-			db.delete(deleteRssFeed);
-		}
-		
-		List<Feed> oldFeed  = db.queryByExample(Feed.class);
-		for(Feed deleteFeed : oldFeed){
-			db.delete(deleteFeed);
-		}
-		db.commit();
-		
-		for(RssFeed rssFeed : rssFeeds){
-			db.store(rssFeed);
-			db.commit();
-		}
-	}
-	
 	public void updateFeedSource(FeedSource feedSource){
 		FeedSource dummyFeedSource = new FeedSource();
 		dummyFeedSource.setFeedSourceName(feedSource.getFeedSourceName());
@@ -129,26 +109,51 @@ public class RssAggregatorApplication extends Application {
 		db.commit();
 	}
 	
-	@Deprecated
-	public List<RssFeed> findAllRssFeeds() {
-		List<RssFeed> resultSet = db.queryByExample(RssFeed.class);
-		for (RssFeed obj : resultSet) {
-			//Log.i("RSSAGGREGATOR", "Before sorting" + obj.getFeeds());
-			RssFeed rssFeed = (RssFeed) obj;
-			Collections.sort(rssFeed.getFeeds(), new Comparator<Feed>() {
-				public int compare(Feed o1, Feed o2) {
-					return o2.getDate().compareTo(o1.getDate());
-				}
-
-			});
-			//Log.i("RSSAGGREGATOR", "After sorting" + obj.getFeeds());
+	public void delete(Object object){
+		db.delete(object);
+		db.commit();
+	}
+	
+	public void deleteCategoryFeedSourceAndFeeds(Category category){
+		
+		for(FeedSource feedSource : category.getFeedSources()){
+			Feed queryFeed = new Feed();
+			queryFeed.setFeedSource(feedSource.getFeedSourceName());
+			List<Feed> feedResult = db.queryByExample(queryFeed);
+			Log.i("RSSAGGREGATOR", "Deleted Feeds " + feedResult.toString());
+			for(Feed feed : feedResult){
+				db.delete(feed);
+				db.commit();
+			}
+			FeedSource queryFeedSource = new FeedSource();
+			queryFeedSource.setFeedSourceName(feedSource.getFeedSourceName());
+			Log.i("RSSAGGREGATOR", "Deleted FeedSource " + feedSource.getFeedSourceName());
+			FeedSource deleteFeedSource = (FeedSource) db.queryByExample(queryFeedSource).get(0);
+			db.delete(deleteFeedSource);
+			db.commit();
 		}
-		return resultSet;
+		Category queryCategory = new Category(category.getCategoryName());
+		Log.i("RSSAGGREGATOR", "Deleted Category " + category.getCategoryName());
+		Category deleteCategory = (Category) db.queryByExample(queryCategory).get(0);
+		db.delete(deleteCategory);
+		db.commit();
 	}
 	
 	public List<Category> findAllCategory(){
 		List<Category> categoryResult = db.queryByExample(Category.class);
 		return categoryResult;
+	}
+	
+	public Category findCategoryByName(String name){
+		Category category = new Category(name);
+		List<Category> categoryResult = db.queryByExample(category);
+		if (categoryResult.size() > 0 ){
+			return categoryResult.get(0);
+		}else if (categoryResult.size() == 0)  {
+			return null;	
+		}else {
+			return categoryResult.get(0);
+		}
 	}
 	
 	public List<RssFeed> findAllFeeds(){
@@ -256,7 +261,13 @@ public class RssAggregatorApplication extends Application {
 					feed.setFeedSource(feedSource.getFeedSourceName());
 					feed.setTitle(rssEntry.getTitle());
 					feed.setUrl(rssEntry.getLink());
-					feed.setDate(rssEntry.getPublishedDate() == null ? new Date() : ((SyndEntryImpl) object).getPublishedDate() );
+					Log.i("RSSAGGREGATOR", " Published Date " + rssEntry.getPublishedDate());
+					if (rssEntry.getPublishedDate() == null){
+						feed.setDate(new Date());
+					}else {
+						feed.setDate(((SyndEntryImpl) object).getPublishedDate()) ;
+					}
+					
 					feed.setDescription(rssEntry.getDescription().getValue());
 					rssFeed.getFeeds().add(feed);
 				}	

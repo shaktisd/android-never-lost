@@ -1,7 +1,12 @@
 0. Show default feed sources 
-1. New screen to add own custom Feeds
-1. Delete option to remove read feeds
+2. New screen to add own custom Feeds / category.
+3. Delete option to remove read feeds
 4. Send article via email 
 5. Read next previous article
-2. Align google ad in middle - Done 
-3. Refresh sync icon. - Done 
+
+
+
+6. Align google ad in middle - Done 
+7. Refresh sync icon. - Done 
+8. Show time ago - DOne
+9. Show progress bar while loading feeds - Done

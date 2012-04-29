@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,11 +90,15 @@ public class RssAggregatorActivity extends ListActivity {
 				holder.text = (TextView) convertView.findViewById(R.id.customitemtext1);
 				convertView.setTag(holder);
 			}
-			holder.text.setText(itemText);
+			holder.text.setText(removeFeedReadFlag(itemText));
 			convertView.setOnClickListener(new OnItemClickListener(position,convertView));
 			return convertView;
 		}
 		
+		private CharSequence removeFeedReadFlag(String itemText) {
+			return itemText.substring(0, itemText.length()-1); 
+		}
+
 		private class OnItemClickListener implements OnClickListener{           
 	        private int position;
 	        View convertView ;
@@ -158,8 +163,8 @@ public class RssAggregatorActivity extends ListActivity {
 		List<String> feedTitles = new ArrayList<String>();
 		if ( rssFeeds.size() > 0 ){
 			for (Feed feed : rssFeeds.get(0).getFeeds()) {
-				feedTitles.add(feed.getTitle() + "\n" + getFormattedTime(feed) + 
-						(feed.isFeedRead() == true ? 'Y' : 'N'));
+				feedTitles.add(feed.getTitle() + "\n" + getFormattedTime(feed) 
+						 + (feed.isFeedRead() == true ? 'Y' : 'N'));
 			}	
 		}
 		
@@ -171,7 +176,8 @@ public class RssAggregatorActivity extends ListActivity {
 		if (feed.getDate() == null) {
 			strDate = "";
 		} else {
-			strDate = feed.getDate().toString();
+			Log.i("RSSAGGREAGTOR","Published DateTime " + feed.getDate() + " long " +  feed.getDate().getTime());
+			strDate = DateUtils.getRelativeTimeSpanString(feed.getDate().getTime()).toString();
 		}
 
 		return strDate;

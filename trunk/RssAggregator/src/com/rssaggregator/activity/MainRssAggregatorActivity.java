@@ -65,6 +65,11 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			rssAggregatorApplication.save(category4);
 			
 			
+			List<FeedSource> feedSources5 = new ArrayList<FeedSource>();
+			feedSources5.add(new FeedSource("DILBERT","http://feed.dilbert.com/dilbert/daily_strip"));
+			Category category5 = new Category("COMICS",feedSources5);
+			rssAggregatorApplication.save(category5);
+			
 		}
 		
 		showCategories();
@@ -204,6 +209,7 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 	 * */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent ;
 		switch (item.getItemId()) {
 		case R.id.menu_refresh:
 			if (!rssAggregatorApplication.isOnline()){
@@ -213,18 +219,17 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			Toast.makeText(this, "Refresh started", Toast.LENGTH_SHORT).show();
 			new DownloadFilesTask().execute(getApplicationContext());
 			return true;
-		/*case R.id.menu_add_rss_source:
-			Intent intent = new Intent(this, FeedSourceActivity.class);
+		case R.id.menu_add_rss_category:
+			intent = new Intent(this, CategoryActivity.class);
 			startActivity(intent);
-			return true;	*/		
+			return true;
+		case R.id.menu_add_rss_source:
+			intent = new Intent(this, FeedSourceActivity.class);
+			startActivity(intent);
+			return true;			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 	
-	private void refreshRssFeeds() {
-		Log.i("RSSAGGREGATOR", "Refreshing feeds ");
-		List<RssFeed> rssFeeds = rssAggregatorApplication.getAllRssFeedsFromSource();
-		rssAggregatorApplication.storeFeeds(rssFeeds);
-	}
 }

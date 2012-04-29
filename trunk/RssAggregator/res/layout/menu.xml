@@ -7,9 +7,13 @@
     <item android:id="@+id/menu_refresh"
     	  android:icon="@drawable/ic_menu_refresh"
           android:title="Refresh" /> 
-    <!--       
+         
+ 	<item android:id="@+id/menu_add_rss_category"
+    	  android:icon="@drawable/ic_add_rss_category"
+          android:title="Category" />
+ 	
  	<item android:id="@+id/menu_add_rss_source"
     	  android:icon="@drawable/ic_add_rss_source"
-          android:title="Add RSS Source" />
-     -->           
+          android:title="Feed Source" />
+ 	
 </menu>
