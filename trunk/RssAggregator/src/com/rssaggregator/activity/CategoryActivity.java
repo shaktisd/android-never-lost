@@ -66,6 +66,7 @@ public class CategoryActivity extends Activity {
 					rssAggregatorApplication.save(category);
 					values.add(category.getCategoryName());
 					adapter.notifyDataSetChanged();
+					categoryNameText.setText("");
 					message.append("Saved Category : " + category.getCategoryName());
 					
 				}

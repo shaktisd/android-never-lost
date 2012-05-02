@@ -48,6 +48,7 @@ public class RssAggregatorApplication extends Application {
 
 	private void setUpApplication() {
 		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
+		config.common().updateDepth(2);
 		config.common().objectClass(Feed.class).objectField("feedSource").indexed(true);
 		config.common().objectClass(FeedSource.class).objectField("feedSourceName").indexed(true);
 		config.common().objectClass(Category.class).objectField("categoryName").indexed(true);
@@ -139,6 +140,28 @@ public class RssAggregatorApplication extends Application {
 		db.commit();
 	}
 	
+	public void deleteCategoryFeedSourceAndFeeds(Category category,FeedSource feedSource) {
+		
+		Feed queryFeed = new Feed();
+		queryFeed.setFeedSource(feedSource.getFeedSourceName());
+		List<Feed> feedResult = db.queryByExample(queryFeed);
+		Log.i("RSSAGGREGATOR", "Deleted Feeds " + feedResult.toString());
+		for(Feed feed : feedResult){
+			db.delete(feed);
+			db.commit();
+		}
+		FeedSource queryFeedSource = new FeedSource();
+		queryFeedSource.setFeedSourceName(feedSource.getFeedSourceName());
+		queryFeedSource.setFeedSourceUrl(feedSource.getFeedSourceUrl());
+		Log.i("RSSAGGREGATOR", "Deleted FeedSource " + feedSource.getFeedSourceName());
+		FeedSource deleteFeedSource = (FeedSource) db.queryByExample(queryFeedSource).get(0);
+		category.getFeedSources().remove(deleteFeedSource);
+		db.store(category);
+		db.commit();
+		db.delete(deleteFeedSource);
+		db.commit();
+	}
+	
 	public List<Category> findAllCategory(){
 		List<Category> categoryResult = db.queryByExample(Category.class);
 		return categoryResult;
@@ -211,6 +234,14 @@ public class RssAggregatorApplication extends Application {
 	
 	}
 	
+	public FeedSource findFeedSourceByName(FeedSource feedSource){
+		List<FeedSource> feedSourceList = db.queryByExample(feedSource);
+		if(feedSourceList != null && feedSourceList.size() > 0 ){
+			return feedSourceList.get(0);
+		}
+		return null;
+	}
+	
 	public List<FeedSource> findAllFeedSource(){
 		return db.queryByExample(FeedSource.class);
 	}
@@ -261,7 +292,6 @@ public class RssAggregatorApplication extends Application {
 					feed.setFeedSource(feedSource.getFeedSourceName());
 					feed.setTitle(rssEntry.getTitle());
 					feed.setUrl(rssEntry.getLink());
-					Log.i("RSSAGGREGATOR", " Published Date " + rssEntry.getPublishedDate());
 					if (rssEntry.getPublishedDate() == null){
 						feed.setDate(new Date());
 					}else {
@@ -310,7 +340,6 @@ public class RssAggregatorApplication extends Application {
 	public void setProgressDialog(ProgressDialog progressDialog) {
 		this.progressDialog = progressDialog;
 	}
-	
-	
+
 	
 }
