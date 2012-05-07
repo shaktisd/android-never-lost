@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -22,11 +23,13 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.config.EmbeddedConfiguration;
+import com.db4o.query.Predicate;
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndFeed;
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.FeedException;
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.SyndFeedInput;
 import com.google.code.rome.android.repackaged.com.sun.syndication.io.XmlReader;
+import com.rssaggregator.valueobjects.ApplicationConfiguration;
 import com.rssaggregator.valueobjects.Category;
 import com.rssaggregator.valueobjects.Feed;
 import com.rssaggregator.valueobjects.FeedSource;
@@ -38,6 +41,7 @@ public class RssAggregatorApplication extends Application {
 	private String feedDescription;
 	private String feedSourceName;
 	private ProgressDialog progressDialog;
+	private boolean refreshMainDataSet;
 	
 	
 	
@@ -52,6 +56,7 @@ public class RssAggregatorApplication extends Application {
 		config.common().objectClass(Feed.class).objectField("feedSource").indexed(true);
 		config.common().objectClass(FeedSource.class).objectField("feedSourceName").indexed(true);
 		config.common().objectClass(Category.class).objectField("categoryName").indexed(true);
+		config.common().objectClass(ApplicationConfiguration.class);
 		
 		if(db == null || db.close()){
 			String path = db4oDBFullPath(this);
@@ -100,6 +105,13 @@ public class RssAggregatorApplication extends Application {
 		return (Feed)db.queryByExample(feed).get(0);
 	}
 	
+	public ApplicationConfiguration getApplicationConfiguration(){
+		List<ApplicationConfiguration> appConfigList = db.queryByExample(ApplicationConfiguration.class);
+		if(appConfigList != null && appConfigList.size() > 0 ){
+			return appConfigList.get(0);
+		}
+		return new ApplicationConfiguration() ;
+	}
 	public void saveFeed(Feed feed){
 		db.store(feed);
 		db.commit();
@@ -277,6 +289,43 @@ public class RssAggregatorApplication extends Application {
 	    return false;
 	}
 	
+	@SuppressWarnings("serial")
+	public void deleteFeedsOlderThanDays(int numberOfDays){
+		final Calendar cal = Calendar.getInstance();
+		cal.add( Calendar.DATE, -numberOfDays );
+
+		ObjectSet<Feed> result = db.query(new Predicate<Feed>() {
+			@Override
+			public boolean match(Feed feed) {
+			return feed.getDate().before(cal.getTime()) ;
+			}
+			});
+		
+		for(Feed feed : result){
+			//Log.i("RSSAGGREAGTOR","Deleting Feed " + feed + " publish date " + feed.getDate());
+			db.delete(feed);
+		}
+		db.commit();
+	}
+	
+	
+	@SuppressWarnings("serial")
+	public void deleteFeedsAlreadyRead(){
+
+		ObjectSet<Feed> result = db.query(new Predicate<Feed>() {
+			@Override
+			public boolean match(Feed feed) {
+			return feed.isFeedRead() ;
+			}
+			});
+		
+		for(Feed feed : result){
+			Log.i("RSSAGGREAGTOR","Deleting Feed " + feed + " is read " + feed.isFeedRead());
+			db.delete(feed);
+		}
+		db.commit();
+	}
+	
 	public List<RssFeed> getRssFeeds(List<FeedSource> feedSources){
 		List<RssFeed> rssFeeds = new ArrayList<RssFeed>();
 		
@@ -290,15 +339,18 @@ public class RssAggregatorApplication extends Application {
 					Feed feed = new Feed();
 					SyndEntryImpl rssEntry = (SyndEntryImpl) object;
 					feed.setFeedSource(feedSource.getFeedSourceName());
-					feed.setTitle(rssEntry.getTitle());
+					feed.setTitle(rssEntry.getTitle().trim());
 					feed.setUrl(rssEntry.getLink());
 					if (rssEntry.getPublishedDate() == null){
 						feed.setDate(new Date());
 					}else {
 						feed.setDate(((SyndEntryImpl) object).getPublishedDate()) ;
 					}
-					
-					feed.setDescription(rssEntry.getDescription().getValue());
+					if(rssEntry.getDescription() != null){
+						feed.setDescription(rssEntry.getDescription().getValue().trim());
+					}else {
+						feed.setDescription("No description, visit site for feed details");
+					}
 					rssFeed.getFeeds().add(feed);
 				}	
 				rssFeeds.add(rssFeed);
@@ -309,6 +361,8 @@ public class RssAggregatorApplication extends Application {
 			} catch (FeedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e){
 				e.printStackTrace();
 			}
 			
@@ -341,5 +395,12 @@ public class RssAggregatorApplication extends Application {
 		this.progressDialog = progressDialog;
 	}
 
-	
+	public boolean isRefreshMainDataSet() {
+		return refreshMainDataSet;
+	}
+
+	public void setRefreshMainDataSet(boolean refreshMainDataSet) {
+		this.refreshMainDataSet = refreshMainDataSet;
+	}
+
 }

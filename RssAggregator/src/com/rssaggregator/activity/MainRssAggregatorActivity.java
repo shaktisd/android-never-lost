@@ -24,6 +24,7 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 
+import com.rssaggregator.valueobjects.ApplicationConfiguration;
 import com.rssaggregator.valueobjects.Category;
 import com.rssaggregator.valueobjects.FeedSource;
 import com.rssaggregator.valueobjects.RssFeed;
@@ -32,6 +33,16 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 	private static final String NAME = "NAME";
 	private RssAggregatorApplication rssAggregatorApplication;
 	private SimpleExpandableListAdapter mAdapter;
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(rssAggregatorApplication.isRefreshMainDataSet()){
+			showCategories();
+			mAdapter.notifyDataSetChanged();	
+			rssAggregatorApplication.setRefreshMainDataSet(false);
+		}
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -134,7 +145,7 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 
 		@Override
 		protected String doInBackground(Context... context) {
-
+			
 			Log.i("RSSAGGREGATOR", "Refreshing feeds ");
 			List<FeedSource> allFeedSources = rssAggregatorApplication.findAllFeedSource();
 			int totalFeeds = allFeedSources.size();
@@ -149,6 +160,21 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 				publishProgress(storedFeeds + "/" + totalFeeds);
 			}
 			Log.i("RSSAGGREGATOR", "Refresh complete");
+			
+			
+			ApplicationConfiguration applicationConfiguration = getRssAggregatorApplication().getApplicationConfiguration();
+			Log.i("RSSAGGREATOR"," Deleting feeds");
+			
+			publishProgress("Deleting feeds older than " + applicationConfiguration.getDeleteFeedAfterNumberOfDays() + " days ");
+			rssAggregatorApplication.deleteFeedsOlderThanDays(applicationConfiguration.getDeleteFeedAfterNumberOfDays());
+			publishProgress("Deleted feeds older than " + applicationConfiguration.getDeleteFeedAfterNumberOfDays() + " days ");
+			if ( applicationConfiguration.isDeleteReadFeeds()){
+				publishProgress("Deleting already read feeds" );
+				rssAggregatorApplication.deleteFeedsAlreadyRead();
+				publishProgress("Deleted already read feeds" );
+			}
+			
+			Log.i("RSSAGGREATOR"," Deleted feeds");
 
 			return null;
 		}
@@ -225,6 +251,10 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			return true;
 		case R.id.menu_add_rss_source:
 			intent = new Intent(this, FeedSourceActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_settings:
+			intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
 			return true;			
 		default:
