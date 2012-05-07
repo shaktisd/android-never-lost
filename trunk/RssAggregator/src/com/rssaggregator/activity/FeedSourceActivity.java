@@ -87,6 +87,7 @@ public class FeedSourceActivity extends Activity {
 						feedSourceName.setText("");
 						feedSourceURL.setText("");
 						message = "Saved ";
+						getRssAggregatorApplication().setRefreshMainDataSet(true);
 						
 					}else {
 						message = "FeedSource already exists ";
@@ -140,6 +141,7 @@ public class FeedSourceActivity extends Activity {
 					message.append("Deleted FeedSource : " + storedFeedSource.getFeedSourceName());
 					feedSourceName.setText("");
 					feedSourceURL.setText("");
+					getRssAggregatorApplication().setRefreshMainDataSet(true);
 				}
 				Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();
 			

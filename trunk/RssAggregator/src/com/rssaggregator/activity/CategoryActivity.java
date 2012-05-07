@@ -55,22 +55,42 @@ public class CategoryActivity extends Activity {
 
 	private void registerClickListenersToButtons() {
 		saveCategory.setOnClickListener(new View.OnClickListener(){
+			StringBuffer message;
 			public void onClick(View arg0) {
+				message = new StringBuffer();
 				Category category = new Category(categoryNameText.getText().toString());
-				rssAggregatorApplication = getRssAggregatorApplication();
-				Category storedCategory = rssAggregatorApplication.findCategoryByName(category.getCategoryName());
-				StringBuffer message = new StringBuffer();
-				if (storedCategory != null){
-					message.append("Category : " + category.getCategoryName() + " already exists");
+				StringBuffer validate = validate(categoryNameText.getText().toString());
+				if ( validate.length() == 0 ){
+					rssAggregatorApplication = getRssAggregatorApplication();
+					Category storedCategory = rssAggregatorApplication.findCategoryByName(category.getCategoryName());
+					if (storedCategory != null){
+						message.append("Category : " + category.getCategoryName() + " already exists");
+					}else {
+						rssAggregatorApplication.save(category);
+						values.add(category.getCategoryName());
+						adapter.notifyDataSetChanged();
+						categoryNameText.setText("");
+						message.append("Saved Category : " + category.getCategoryName());
+						rssAggregatorApplication.setRefreshMainDataSet(true);
+						
+					}	
 				}else {
-					rssAggregatorApplication.save(category);
-					values.add(category.getCategoryName());
-					adapter.notifyDataSetChanged();
-					categoryNameText.setText("");
-					message.append("Saved Category : " + category.getCategoryName());
-					
+					message.append(validate);
 				}
+				
 				Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();
+			}
+
+			private StringBuffer validate(String categoryName) {
+				StringBuffer msg = new StringBuffer();
+				if(categoryName == null){
+					msg.append("Provide Category name");
+				}
+				
+				if(categoryName != null & categoryName.trim().length() ==0){
+					msg.append("Provide Category name");
+				}
+				return msg;
 			}
 		});
 		
@@ -88,6 +108,7 @@ public class CategoryActivity extends Activity {
 					values.remove(category.getCategoryName());
 					adapter.notifyDataSetChanged();
 					message.append("Deleted Category : " + category.getCategoryName());
+					rssAggregatorApplication.setRefreshMainDataSet(true);
 				}
 				Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();
 			}
