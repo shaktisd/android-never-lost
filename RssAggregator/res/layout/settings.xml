@@ -25,10 +25,9 @@
                 android:id="@+id/deletefeedafterdaysspinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
         </TableRow>
     </TableLayout>
-    
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -37,11 +36,12 @@
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="Delete read feeds "
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -50,11 +50,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ToggleButton" />
-
         </TableRow>
     </TableLayout>
-    
-        <TableLayout
+
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -62,23 +61,22 @@
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="Add feeds from bundle"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
-        android:id="@+id/bundledfeedsbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="View Bundled Feeds" />
-
+            <Button
+                android:id="@+id/bundledfeedsbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="View Bundled Feeds" />
         </TableRow>
     </TableLayout>
-
-    
+
 </LinearLayout>

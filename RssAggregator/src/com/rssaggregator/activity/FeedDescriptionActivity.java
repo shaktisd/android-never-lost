@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -28,8 +31,9 @@ public class FeedDescriptionActivity extends Activity {
 		String feedDescription = getRssAggregatorApplication().getFeedDescription();
 		String html = "<html> <head> " +
 				"<style type=\"text/css\"> body { font-family: serif; } </style>" +
-				" </head><br><a href=\"" + getRssAggregatorApplication().getFeedUrl()  +" \">Visit Site</a> <br> </html>";
-		this.setTitle(getRssAggregatorApplication().getFeedSourceName());
+				" </head><br><a href=\"" + getRssAggregatorApplication().getFeedUrl()  +" \">Visit Site</a> " +
+						"<br> </html>";
+		this.setTitle("Home > "+getRssAggregatorApplication().getFeedSourceName()+" > Article");
 		webView.loadData(html+feedDescription, "text/html", null);
 		
 	}
@@ -37,6 +41,33 @@ public class FeedDescriptionActivity extends Activity {
 	private RssAggregatorApplication getRssAggregatorApplication() {
 		return (RssAggregatorApplication) getApplication();
 
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.layout.homemenu, menu);
+		return true;
+	}
+	
+	/**
+	 * Event Handling for Individual menu item selected Identify single menu
+	 * item by it's id
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent ;
+		switch (item.getItemId()) {
+		case R.id.menu_home:
+			intent = new Intent(this, MainRssAggregatorActivity.class);
+			startActivity(intent);
+			return true;	
+		case R.id.menu_back:
+			finish();
+			return true;			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 }

@@ -6,15 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +28,6 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Toast;
 
-import com.rssaggregator.valueobjects.ApplicationConfiguration;
 import com.rssaggregator.valueobjects.Category;
 import com.rssaggregator.valueobjects.FeedSource;
 import com.rssaggregator.valueobjects.RssFeed;
@@ -47,40 +50,38 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setTitle("RSS Aggregator Home");
 		setContentView(R.layout.mainrssaggregator);
 		rssAggregatorApplication = getRssAggregatorApplication();
 		if ( rssAggregatorApplication.findAllCategory().size() == 0 ){
 			List<FeedSource> feedSources1 = new ArrayList<FeedSource>();
-			feedSources1.add(new FeedSource("NDTV","http://feeds.feedburner.com/NdtvNews-TopStories"));
-			feedSources1.add(new FeedSource("HINDUSTAN TIMES","http://feeds.hindustantimes.com/HT-HomePage-TopStories"));
-			feedSources1.add(new FeedSource("TIME OF INDIA","http://timesofindia.indiatimes.com/rssfeedstopstories.cms"));
-			Category category1 = new Category("NEWS",feedSources1);
+			feedSources1.add(new FeedSource("Ndtv","http://feeds.feedburner.com/NdtvNews-TopStories"));
+			feedSources1.add(new FeedSource("BBC News - Home","http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"));
+			feedSources1.add(new FeedSource("CNN.com","http://rss.cnn.com/rss/cnn_topstories.rss"));
+			 
+			Category category1 = new Category("News",feedSources1);
 			rssAggregatorApplication.save(category1);
 			
-			List<FeedSource> feedSources2 = new ArrayList<FeedSource>();
-			feedSources2.add(new FeedSource("ECONOMIC TIMES","http://economictimes.indiatimes.com/rssfeedsdefault.cms"));
-			feedSources2.add(new FeedSource("CNN MONEY","http://rss.cnn.com/rss/money_latest.rss"));
-			Category category2 = new Category("FINANCE",feedSources2);
-			rssAggregatorApplication.save(category2);
-			
-			List<FeedSource> feedSources3 = new ArrayList<FeedSource>();
-			feedSources3.add(new FeedSource("CRIC INFO WORLD","http://www.espncricinfo.com/rss/content/feeds/news/0.xml"));
-			feedSources3.add(new FeedSource("CRIC INFO INDIA","http://www.espncricinfo.com/rss/content/feeds/news/6.xml"));
-			Category category3 = new Category("SPORTS",feedSources3);
-			rssAggregatorApplication.save(category3);
-			
 			List<FeedSource> feedSources4 = new ArrayList<FeedSource>();
-			feedSources4.add(new FeedSource("ENGADGET","http://www.engadget.com/rss.xml"));
-			feedSources4.add(new FeedSource("SLASHDOT","http://rss.slashdot.org/Slashdot/slashdotDevelopers"));
-			Category category4 = new Category("TECHNOLOGY",feedSources4);
+			feedSources4.add(new FeedSource("Engadget","http://www.engadget.com/rss.xml"));
+			feedSources4.add(new FeedSource("Slashdot","http://rss.slashdot.org/Slashdot/slashdot"));
+			Category category4 = new Category("Technology",feedSources4);
 			rssAggregatorApplication.save(category4);
 			
 			
 			List<FeedSource> feedSources5 = new ArrayList<FeedSource>();
-			feedSources5.add(new FeedSource("DILBERT","http://feed.dilbert.com/dilbert/daily_strip"));
-			Category category5 = new Category("COMICS",feedSources5);
+			feedSources5.add(new FeedSource("Dilbert","http://feed.dilbert.com/dilbert/daily_strip"));
+			Category category5 = new Category("Webcomics",feedSources5);
 			rssAggregatorApplication.save(category5);
 			
+			final AlertDialog alertDialog = new AlertDialog.Builder(MainRssAggregatorActivity.this).create();
+			alertDialog.setTitle("Application startup");
+			alertDialog.setMessage("Running application for the first time. Click on Menu then Refresh button to download articles. Rss articles will be visible once download is complete.");
+			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+			      public void onClick(DialogInterface dialog, int which) {
+			    	  alertDialog.dismiss();
+			    } }); 
+			alertDialog.show();
 		}
 		
 		showCategories();
@@ -145,7 +146,6 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 
 		@Override
 		protected String doInBackground(Context... context) {
-			
 			Log.i("RSSAGGREGATOR", "Refreshing feeds ");
 			List<FeedSource> allFeedSources = rssAggregatorApplication.findAllFeedSource();
 			int totalFeeds = allFeedSources.size();
@@ -162,13 +162,18 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			Log.i("RSSAGGREGATOR", "Refresh complete");
 			
 			
-			ApplicationConfiguration applicationConfiguration = getRssAggregatorApplication().getApplicationConfiguration();
+			//ApplicationConfiguration applicationConfiguration = getRssAggregatorApplication().getApplicationConfiguration();
 			Log.i("RSSAGGREATOR"," Deleting feeds");
+			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context[0]);
+			String numberOfDaysForOldArticles = sharedPrefs.getString("numberOfDaysForOldArticles", "0");
+			Boolean deleteReadRssArticlesCheckbox = sharedPrefs.getBoolean("deleteReadRssArticlesCheckbox", true); 
 			
-			publishProgress("Deleting feeds older than " + applicationConfiguration.getDeleteFeedAfterNumberOfDays() + " days ");
-			rssAggregatorApplication.deleteFeedsOlderThanDays(applicationConfiguration.getDeleteFeedAfterNumberOfDays());
-			publishProgress("Deleted feeds older than " + applicationConfiguration.getDeleteFeedAfterNumberOfDays() + " days ");
-			if ( applicationConfiguration.isDeleteReadFeeds()){
+			Log.i("RSSAGGREATOR"," Deleting feeds older than " + numberOfDaysForOldArticles);
+			publishProgress("Deleting feeds older than " + numberOfDaysForOldArticles + " days ");
+			rssAggregatorApplication.deleteFeedsOlderThanDays(Integer.parseInt(numberOfDaysForOldArticles));
+			publishProgress("Deleted feeds older than " + numberOfDaysForOldArticles + " days ");
+			if ( deleteReadRssArticlesCheckbox){
+				Log.i("RSSAGGREATOR"," Deleting already read feeds ");
 				publishProgress("Deleting already read feeds" );
 				rssAggregatorApplication.deleteFeedsAlreadyRead();
 				publishProgress("Deleted already read feeds" );
@@ -254,7 +259,7 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			startActivity(intent);
 			return true;
 		case R.id.menu_settings:
-			intent = new Intent(this, SettingsActivity.class);
+			intent = new Intent(this, RssPreferencesActivity.class);
 			startActivity(intent);
 			return true;			
 		default:

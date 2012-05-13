@@ -21,6 +21,9 @@ import android.app.ExpandableListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
@@ -42,6 +45,7 @@ public class ImportOpmlFeedsActivity extends ExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.opml_main);
+		this.setTitle("Home > Settings > Import Rss ");
 		opmlFeeds = parseOpmlXml();
 		expListAdapter =
 			new SimpleExpandableListAdapter(
@@ -170,6 +174,32 @@ public class ImportOpmlFeedsActivity extends ExpandableListActivity {
 
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.layout.homemenu, menu);
+		return true;
+	}
+	
+	/**
+	 * Event Handling for Individual menu item selected Identify single menu
+	 * item by it's id
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent ;
+		switch (item.getItemId()) {
+		case R.id.menu_home:
+			intent = new Intent(this, MainRssAggregatorActivity.class);
+			startActivity(intent);
+			return true;	
+		case R.id.menu_back:
+			finish();
+			return true;			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	
 
 }

@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -34,6 +40,7 @@ public class FeedSourceActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.feedsource);
+		this.setTitle("Home > RSS Details");
 		registerViewItems();
 		registerClickListenersToButtons();
 		
@@ -127,24 +134,37 @@ public class FeedSourceActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				FeedSource queryFeedSource = new FeedSource(feedSourceName.getText().toString(),feedSourceURL.getText().toString());
+				final FeedSource queryFeedSource = new FeedSource(feedSourceName.getText().toString(),feedSourceURL.getText().toString());
 				rssAggregatorApplication = getRssAggregatorApplication();
-				FeedSource storedFeedSource = rssAggregatorApplication.findFeedSourceByName(queryFeedSource);
+				final FeedSource storedFeedSource = rssAggregatorApplication.findFeedSourceByName(queryFeedSource);
 				StringBuffer message = new StringBuffer();
 				if (storedFeedSource == null){
 					message.append("FeedSource : " + queryFeedSource.getFeedSourceName() + " doen't exists");
+					Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();
 				}else {
-					Category categoryByName = rssAggregatorApplication.findCategoryByName(String.valueOf(spinner.getSelectedItem()));
-					rssAggregatorApplication.deleteCategoryFeedSourceAndFeeds(categoryByName,storedFeedSource);
-					values.remove(storedFeedSource.getFeedSourceName());
-					adapter.notifyDataSetChanged();
-					message.append("Deleted FeedSource : " + storedFeedSource.getFeedSourceName());
-					feedSourceName.setText("");
-					feedSourceURL.setText("");
-					getRssAggregatorApplication().setRefreshMainDataSet(true);
+					AlertDialog.Builder builder = new AlertDialog.Builder(FeedSourceActivity.this);
+					builder.setMessage("Are you sure you want to delete?")
+					.setCancelable(false)
+					.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							Category categoryByName = rssAggregatorApplication.findCategoryByName(String.valueOf(spinner.getSelectedItem()));
+							rssAggregatorApplication.deleteCategoryFeedSourceAndFeeds(categoryByName,storedFeedSource);
+							values.remove(storedFeedSource.getFeedSourceName());
+							adapter.notifyDataSetChanged();
+							Toast.makeText(getApplicationContext(), "Deleted FeedSource : " + storedFeedSource.getFeedSourceName(), Toast.LENGTH_SHORT).show();
+							feedSourceName.setText("");
+							feedSourceURL.setText("");
+							getRssAggregatorApplication().setRefreshMainDataSet(true);
+						}
+					})
+					.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+					AlertDialog alert = builder.create();
+					alert.show();
 				}
-				Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();
-			
 			}
 			
 		});
@@ -194,4 +214,32 @@ public class FeedSourceActivity extends Activity {
 		return (RssAggregatorApplication) getApplication();
 
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.layout.homemenu, menu);
+		return true;
+	}
+	
+	/**
+	 * Event Handling for Individual menu item selected Identify single menu
+	 * item by it's id
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent ;
+		switch (item.getItemId()) {
+		case R.id.menu_home:
+			intent = new Intent(this, MainRssAggregatorActivity.class);
+			startActivity(intent);
+			return true;	
+		case R.id.menu_back:
+			finish();
+			return true;			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 }
