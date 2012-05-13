@@ -8,6 +8,9 @@ import com.rssaggregator.valueobjects.ApplicationConfiguration;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,9 +29,20 @@ public class SettingsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
+		this.setTitle("Home > Settings");
 		registerViewItems();
 		registerClickListenersToButtons();
 		setupSpinner();
+		setupToggleButtion();
+	}
+
+	private void setupToggleButtion() {
+		ApplicationConfiguration applicationConfiguration = getRssAggregatorApplication().getApplicationConfiguration();
+		if(applicationConfiguration.isDeleteReadFeeds()){
+			deleteReadFeedsToggleButton.setChecked(true);
+		}else {
+			deleteReadFeedsToggleButton.setChecked(false);
+		}
 	}
 
 	private void setupSpinner() {
@@ -86,6 +100,7 @@ public class SettingsActivity extends Activity {
 			}
 		});
 		
+		
 	}
 	
 	
@@ -101,4 +116,32 @@ public class SettingsActivity extends Activity {
 		return (RssAggregatorApplication) getApplication();
 
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.layout.homemenu, menu);
+		return true;
+	}
+	
+	/**
+	 * Event Handling for Individual menu item selected Identify single menu
+	 * item by it's id
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent ;
+		switch (item.getItemId()) {
+		case R.id.menu_home:
+			intent = new Intent(this, MainRssAggregatorActivity.class);
+			startActivity(intent);
+			return true;	
+		case R.id.menu_back:
+			finish();
+			return true;			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 }

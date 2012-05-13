@@ -12,12 +12,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.EmbeddedObjectContainer;
@@ -402,5 +405,5 @@ public class RssAggregatorApplication extends Application {
 	public void setRefreshMainDataSet(boolean refreshMainDataSet) {
 		this.refreshMainDataSet = refreshMainDataSet;
 	}
-
+	
 }

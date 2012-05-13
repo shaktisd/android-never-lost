@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="RSS Aggregator Preferences" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="deleteReadRssArticlesCheckbox"
+            android:persistent="true"
+            android:summary="Delete rss articles which are already read, on refresh"
+            android:title="Delete read rss articles" />
+
+        <ListPreference
+            android:entries="@array/number_of_days_array"
+            android:entryValues="@array/number_of_days_values"
+            android:key="numberOfDaysForOldArticles"
+            android:persistent="true"
+            android:summary="Delete rss articles older than days"
+            android:title="Delete old articles" 
+            />
+        
+
+        <Preference
+            android:summary="Browse bundled Rss"
+            android:title="Add bundled Rss"
+            android:key="bundledFeed" 
+            />
+        
+        <Preference
+            android:summary="0.0.5 beta"
+            android:title="Rss Aggregator Version" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,8 +1,10 @@
-0. Show default feed sources 
-3. Delete option to remove read feeds
+1. Add proper navigation titles
+2. Add Home navigation menu
+3. Add preference activity
 4. Send article via email 
 5. Read next previous article
-6. Refresh issue 
+
+ 
 
 
 6. Align google ad in middle - Done 
@@ -10,3 +12,7 @@
 8. Show time ago - DOne
 9. Show progress bar while loading feeds - Done
 10. New screen to add own custom Feeds / category.  - Done
+6. Refresh issue - Done
+0. Show default feed sources - Done
+3. Delete option to remove read feeds - Done
+-  Initial prompt on to refresh feeds - Done
