@@ -165,7 +165,7 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			//ApplicationConfiguration applicationConfiguration = getRssAggregatorApplication().getApplicationConfiguration();
 			Log.i("RSSAGGREATOR"," Deleting feeds");
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context[0]);
-			String numberOfDaysForOldArticles = sharedPrefs.getString("numberOfDaysForOldArticles", "0");
+			String numberOfDaysForOldArticles = sharedPrefs.getString("numberOfDaysForOldArticles", "2");
 			Boolean deleteReadRssArticlesCheckbox = sharedPrefs.getBoolean("deleteReadRssArticlesCheckbox", true); 
 			
 			Log.i("RSSAGGREATOR"," Deleting feeds older than " + numberOfDaysForOldArticles);
