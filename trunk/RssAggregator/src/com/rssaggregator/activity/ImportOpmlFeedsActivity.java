@@ -146,7 +146,6 @@ public class ImportOpmlFeedsActivity extends ExpandableListActivity {
 						OpmlFeed opmlFeed = opmlFeeds.get(opmlFeeds.size()-1);
 						Map<String, String> opmlFeedSourceUrl = opmlFeed.getOpmlFeedSourceUrl();
 						opmlFeedSourceUrl.put(attributes.getValue("title"), attributes.getValue("xmlUrl"));
-						//Log.i("RSSAGGREGATOR",opmlFeedSourceUrl + "");
 					}
 				}
 			};
@@ -156,7 +155,6 @@ public class ImportOpmlFeedsActivity extends ExpandableListActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//Log.i("RSSAGGREGATOR",opmlFeeds + "");
 		Collections.sort(opmlFeeds, new Comparator<OpmlFeed>() {
 			@Override
 			public int compare(OpmlFeed lhs, OpmlFeed rhs) {

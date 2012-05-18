@@ -146,7 +146,7 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 
 		@Override
 		protected String doInBackground(Context... context) {
-			Log.i("RSSAGGREGATOR", "Refreshing feeds ");
+			//Log.i("RSSAGGREGATOR", "Refreshing feeds ");
 			List<FeedSource> allFeedSources = rssAggregatorApplication.findAllFeedSource();
 			int totalFeeds = allFeedSources.size();
 			int storedFeeds = 0;
@@ -159,27 +159,27 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 				storedFeeds++;
 				publishProgress(storedFeeds + "/" + totalFeeds);
 			}
-			Log.i("RSSAGGREGATOR", "Refresh complete");
+			//Log.i("RSSAGGREGATOR", "Refresh complete");
 			
 			
 			//ApplicationConfiguration applicationConfiguration = getRssAggregatorApplication().getApplicationConfiguration();
-			Log.i("RSSAGGREATOR"," Deleting feeds");
+			//Log.i("RSSAGGREATOR"," Deleting feeds");
 			SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context[0]);
 			String numberOfDaysForOldArticles = sharedPrefs.getString("numberOfDaysForOldArticles", "2");
 			Boolean deleteReadRssArticlesCheckbox = sharedPrefs.getBoolean("deleteReadRssArticlesCheckbox", true); 
 			
-			Log.i("RSSAGGREATOR"," Deleting feeds older than " + numberOfDaysForOldArticles);
+			//Log.i("RSSAGGREATOR"," Deleting feeds older than " + numberOfDaysForOldArticles);
 			publishProgress("Deleting feeds older than " + numberOfDaysForOldArticles + " days ");
 			rssAggregatorApplication.deleteFeedsOlderThanDays(Integer.parseInt(numberOfDaysForOldArticles));
 			publishProgress("Deleted feeds older than " + numberOfDaysForOldArticles + " days ");
 			if ( deleteReadRssArticlesCheckbox){
-				Log.i("RSSAGGREATOR"," Deleting already read feeds ");
+				//Log.i("RSSAGGREATOR"," Deleting already read feeds ");
 				publishProgress("Deleting already read feeds" );
 				rssAggregatorApplication.deleteFeedsAlreadyRead();
 				publishProgress("Deleted already read feeds" );
 			}
 			
-			Log.i("RSSAGGREATOR"," Deleted feeds");
+			//Log.i("RSSAGGREATOR"," Deleted feeds");
 
 			return null;
 		}

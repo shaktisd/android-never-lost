@@ -111,7 +111,7 @@ public class RssAggregatorActivity extends ListActivity {
 	        }
 	        @Override
 	        public void onClick(View listItemView) {
-	                Log.v("RSSAGGREGATOR", "onItemClick at position" + position);
+	                //Log.v("RSSAGGREGATOR", "onItemClick at position" + position);
 	    			if (!rssAggregatorApplication.isOnline()) {Toast.makeText(getApplicationContext(),"No INTERNET connection detected",Toast.LENGTH_LONG).show();}
 	    			
 	    			ViewHolder holder = (ViewHolder) convertView.getTag();
@@ -129,7 +129,7 @@ public class RssAggregatorActivity extends ListActivity {
 	    			rssAggregatorApplication.saveFeed(feed);
 	    			rssFeeds.set(position, markFeedAsRead(title));
 
-	    			Log.i("RSSAGGREGATOR", "position " + position + " title " + title + " url " + feed.getUrl());
+	    			//Log.i("RSSAGGREGATOR", "position " + position + " title " + title + " url " + feed.getUrl());
 	    			rssAggregatorApplication.setFeedUrl(feed.getUrl());
 	    			rssAggregatorApplication.setFeedDescription(feed.getDescription());
 	    			Intent intent = new Intent(getApplicationContext(),FeedDescriptionActivity.class);
