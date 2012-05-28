@@ -5,4 +5,5 @@
 <color name="translucent_red">#ff0000</color>
 <color name="readfeed">#BEBEBE</color>
 <color name="unreadfeed">#000000</color>
+<color name="white">#FFFFF0</color>
 </resources>

@@ -51,6 +51,8 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setTitle("RSS Aggregator Home");
+		AppRater.app_launched(this);
+		//AppRater.showRateDialog(this, null);
 		setContentView(R.layout.mainrssaggregator);
 		rssAggregatorApplication = getRssAggregatorApplication();
 		if ( rssAggregatorApplication.findAllCategory().size() == 0 ){
@@ -58,6 +60,8 @@ public class MainRssAggregatorActivity extends ExpandableListActivity {
 			feedSources1.add(new FeedSource("Ndtv","http://feeds.feedburner.com/NdtvNews-TopStories"));
 			feedSources1.add(new FeedSource("BBC News - Home","http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"));
 			feedSources1.add(new FeedSource("CNN.com","http://rss.cnn.com/rss/cnn_topstories.rss"));
+			feedSources1.add(new FeedSource("Times Of India","http://timesofindia.indiatimes.com/rssfeedstopstories.cms"));
+			feedSources1.add(new FeedSource("Economic Times","http://economictimes.indiatimes.com/rssfeedstopstories.cms"));
 			 
 			Category category1 = new Category("News",feedSources1);
 			rssAggregatorApplication.save(category1);
