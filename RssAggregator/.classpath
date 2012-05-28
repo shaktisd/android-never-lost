@@ -8,5 +8,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/GoogleAdMobAdsSdk-4.3.1.jar"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="E:/Android/android-sdk-windows/platforms/android-13/android.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
