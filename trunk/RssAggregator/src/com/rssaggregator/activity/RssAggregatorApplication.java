@@ -45,6 +45,7 @@ public class RssAggregatorApplication extends Application {
 	private String feedSourceName;
 	private ProgressDialog progressDialog;
 	private boolean refreshMainDataSet;
+	private String feedTitle;
 	
 	
 	
@@ -278,6 +279,10 @@ public class RssAggregatorApplication extends Application {
 	public String getFeedUrl() {
 		return feedUrl;
 	}
+	
+	public String getFeedTitle(){
+		return feedTitle;
+	}
 
 	public void setFeedUrl(String feedUrl) {
 		this.feedUrl = feedUrl;
@@ -404,6 +409,10 @@ public class RssAggregatorApplication extends Application {
 
 	public void setRefreshMainDataSet(boolean refreshMainDataSet) {
 		this.refreshMainDataSet = refreshMainDataSet;
+	}
+
+	public void setFeedTitle(String title) {
+		this.feedTitle = title;
 	}
 	
 }

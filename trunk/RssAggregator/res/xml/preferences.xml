@@ -26,7 +26,7 @@
             />
         
         <Preference
-            android:summary="1.1"
+            android:summary="1.3"
             android:title="Rss Aggregator Version" />
     </PreferenceCategory>
 

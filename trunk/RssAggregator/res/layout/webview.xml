@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/webview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:id="@+id/topLayoutWebView"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/linearlayoutlistviewWebView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/ad_holder_webview"
+        android:orientation="vertical" >
+
+        <WebView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/webview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+
+    <!-- Ad Placeholder -->
+
+    <RelativeLayout
+        android:id="@+id/ad_holder_webview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom" >
+
+        <com.tapfortap.AdView
+            android:id="@+id/ad_view"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_gravity="bottom" />
+    </RelativeLayout>
+
+</RelativeLayout>
