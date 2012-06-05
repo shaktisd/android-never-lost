@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -95,11 +96,40 @@ public class RssAggregatorActivity extends ListActivity {
 			}
 			holder.text.setText(removeFeedReadFlag(itemText));
 			convertView.setOnClickListener(new OnItemClickListener(position,convertView));
+			convertView.setOnLongClickListener(new OnLongItemClickListener(position,convertView));
 			return convertView;
 		}
 		
 		private CharSequence removeFeedReadFlag(String itemText) {
 			return itemText.substring(0, itemText.length()-1); 
+		}
+		
+		private class OnLongItemClickListener implements OnLongClickListener {
+			private int position;
+			View convertView;
+
+			OnLongItemClickListener(int position, View convertView) {
+				this.position = position;
+				this.convertView = convertView;
+			}
+
+			@Override
+			public boolean onLongClick(View v) {
+				String title = rssFeeds.get(position);
+				Feed query = new Feed();
+    			query.setTitle(extractTitle(title));
+    			query.setFeedSource(rssAggregatorApplication.getFeedSourceName());
+    			Feed feed = rssAggregatorApplication.findFeed(query);
+    			String content = feed.getUrl();
+    			
+    			Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, extractTitle(title) + " (shared via Rss Aggregator)");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, content);
+                shareIntent.setType("text/plain");
+                startActivity(Intent.createChooser(shareIntent,"Share article"));
+    			
+				return false;
+			}
 		}
 
 		private class OnItemClickListener implements OnClickListener{           
@@ -132,6 +162,7 @@ public class RssAggregatorActivity extends ListActivity {
 	    			//Log.i("RSSAGGREGATOR", "position " + position + " title " + title + " url " + feed.getUrl());
 	    			rssAggregatorApplication.setFeedUrl(feed.getUrl());
 	    			rssAggregatorApplication.setFeedDescription(feed.getDescription());
+	    			rssAggregatorApplication.setFeedTitle(feed.getTitle());
 	    			Intent intent = new Intent(getApplicationContext(),FeedDescriptionActivity.class);
 	    			startActivity(intent);
 	    			                

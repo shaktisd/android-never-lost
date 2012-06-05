@@ -5,6 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="E:/Android/projects/RssAggregator/lib/db4o-8.0.236.16058-core-java5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jdom-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/android-rome-feed-reader-1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/TapForTap.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/GoogleAdMobAdsSdk-4.3.1.jar"/>
 	<classpathentry kind="src" path="gen"/>
