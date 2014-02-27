@@ -13,7 +13,6 @@
         android:orientation="vertical" >
 
         <WebView
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/webview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
@@ -28,11 +27,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="bottom" >
 
-        <com.tapfortap.AdView
-            android:id="@+id/ad_view"
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:layout_gravity="bottom" />
+        
     </RelativeLayout>
 
 </RelativeLayout>

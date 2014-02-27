@@ -86,7 +86,7 @@ public class RssAggregatorActivity extends ListActivity {
 			String itemText = rssFeeds.get(position);
 			if (isFeedRead(itemText)){
 				holder.text.setTypeface(Typeface.MONOSPACE);
-				holder.text.setTextColor(R.color.readfeed);
+				//holder.text.setTextColor(R.color.readfeed);
 				holder.text.setCompoundDrawablesWithIntrinsicBounds(R.drawable.readrss, 0, 0, 0);
 			}else if( holder.text.getTypeface().equals(Typeface.MONOSPACE)) {
 				convertView = mInflater.inflate(R.layout.list_item, null);
@@ -146,7 +146,7 @@ public class RssAggregatorActivity extends ListActivity {
 	    			
 	    			ViewHolder holder = (ViewHolder) convertView.getTag();
 	    			holder.text.setTypeface(Typeface.MONOSPACE);
-	    			holder.text.setTextColor(R.color.readfeed);
+	    			//holder.text.setTextColor(R.color.readfeed);
 	    			holder.text.setCompoundDrawablesWithIntrinsicBounds(R.drawable.readrss, 0, 0, 0);
 	    			convertView.setTag(holder);
 	    			
