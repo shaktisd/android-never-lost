@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <Button android:layout_gravity="center_horizontal" android:layout_height="wrap_content" android:id="@+id/changepasswordbutton" android:text="Change password" android:layout_width="match_parent"></Button>
+    <Button android:layout_gravity="center_horizontal" android:layout_height="wrap_content" android:id="@+id/updatesimbutton" android:text="Update SIM details" android:layout_width="match_parent"></Button>
+    <Button android:layout_gravity="center_horizontal" android:id="@+id/settingsButton" android:layout_height="wrap_content" android:text="Settings" android:layout_width="match_parent"></Button>
+    <Button android:layout_gravity="center_horizontal" android:layout_height="wrap_content" android:id="@+id/helpbutton" android:text="Help" android:layout_width="match_parent"></Button>
+</LinearLayout>

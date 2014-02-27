@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/customitemtext1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dip"
+    android:drawableLeft="@drawable/unreadrss"
+    android:drawablePadding="4dip"
+    android:paddingTop="6dip"
+    android:paddingBottom="6dip"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:textStyle="bold"
+    android:typeface="serif" />

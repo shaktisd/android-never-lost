@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.rssaggregator.activity"
+          android:versionCode="7"
+          android:versionName="1.7"
+          android:installLocation="auto" >
+          
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19" />
+
+	<application android:name=".RssAggregatorApplication"
+		android:icon="@drawable/icon" android:label="@string/app_name"
+		>
+		<activity android:name=".MainRssAggregatorActivity"
+			android:label="@string/app_name">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		
+		<activity android:name=".RssAggregatorActivity" android:label="@string/app_name" />
+		<activity android:name=".WebViewActivity" android:label="@string/app_name" />
+		<activity android:name=".CategoryActivity" android:label="@string/app_name" />
+		<activity android:name=".FeedDescriptionActivity" android:label="@string/app_name" />
+		<activity android:name=".FeedSourceActivity" android:label="@string/app_name" />
+		<activity android:name=".ImportOpmlFeedsActivity" android:label="@string/app_name" />
+		<activity android:name=".SettingsActivity" android:label="@string/app_name"/>
+		<activity android:name=".RssPreferencesActivity" android:label="@string/app_name"/>
+		
+		
+		 <activity android:name="com.google.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+	</application>
+
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+    <head>
+        <title>RSS Subscriptions</title>
+    </head>
+    <body>
+		<outline title="Indian News" text="Leading Indian News Papers">
+            <outline text="The Times Of India" title="The Times Of India" type="rss"
+                xmlUrl="http://timesofindia.indiatimes.com/rssfeedstopstories.cms" htmlUrl="http://timesofindia.indiatimes.com/rssfeedstopstories.cms"/>
+            <outline text="The Hindustan Times"
+                title="The Hindustan Times" type="rss"
+                xmlUrl="http://feeds.hindustantimes.com/HT-HomePage-TopStories" htmlUrl="http://feeds.hindustantimes.com/HT-HomePage-TopStories"/>
+             <outline text="The Hindustan Times"
+                title="The Hindustan Times" type="rss"
+                xmlUrl="http://feeds.hindustantimes.com/HT-HomePage-TopStories" htmlUrl="http://feeds.hindustantimes.com/HT-HomePage-TopStories"/>
+             <outline text="The Hindu"
+                title="The Hindu" type="rss"
+                xmlUrl="http://www.hindu.com/rss/01hdline.xml" htmlUrl="http://www.hindu.com/rss/01hdline.xml"/>
+             <outline text="The Economic Times"
+                title="The Economic Times" type="rss"
+                xmlUrl="http://economictimes.indiatimes.com/rssfeedstopstories.cms" htmlUrl="http://economictimes.indiatimes.com/rssfeedstopstories.cms"/>
+        	 <outline text="NDTV"
+                title="NDTV" type="rss"
+                xmlUrl="http://feeds.feedburner.com/NdtvNews-TopStories" htmlUrl="http://feeds.feedburner.com/NdtvNews-TopStories"/>
+        </outline>        
+        <outline title="Programming" text="Programming">
+            <outline text="CodeBetter.Com" title="CodeBetter.Com"
+                type="rss"
+                xmlUrl="http://codebetter.com/blogs/MainFeed.aspx" htmlUrl="http://codebetter.com"/>
+            <outline text="Coding Horror" title="Coding Horror"
+                type="rss"
+                xmlUrl="http://www.codinghorror.com/blog/index.xml" htmlUrl="http://www.codinghorror.com/blog/"/>
+            <outline text="dzone.com: latest front page"
+                title="dzone.com: latest front page" type="rss"
+                xmlUrl="http://www.dzone.com/feed/frontpage/rss.xml" htmlUrl="http://www.dzone.com/links/"/>
+            <outline
+                text="Lambda the Ultimate - Programming Languages Weblog"
+                title="Lambda the Ultimate - Programming Languages Weblog"
+                type="rss"
+                xmlUrl="http://lambda-the-ultimate.org/rss.xml" htmlUrl="http://lambda-the-ultimate.org"/>
+            <outline text="programming" title="programming" type="rss"
+                xmlUrl="http://programming.reddit.com/.rss" htmlUrl="http://www.reddit.com/r/programming/"/>
+            <outline text="The Code Project Latest Articles"
+                title="The Code Project Latest Articles" type="rss"
+                xmlUrl="http://www.codeproject.com/webservices/articlerss.aspx?cat=1" htmlUrl="http://www.codeproject.com"/>
+            <outline text="Top News" title="Top News" type="rss"
+                xmlUrl="http://digg.com/rss/indexprogramming.xml" htmlUrl="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Fdigg.com%2Frss%2Findexprogramming.xml"/>
+        </outline>
+        <outline title="News" text="News">
+            <outline text="BBC News - Home" title="BBC News - Home"
+                type="rss"
+                xmlUrl="http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml" htmlUrl="http://www.bbc.co.uk/news/#sa-ns_mchannel=rss&amp;ns_source=PublicRSS20-sa"/>
+            <outline text="Christian Science Monitor | All Stories"
+                title="Christian Science Monitor | All Stories"
+                type="rss" xmlUrl="http://www.csmonitor.com/rss/top.rss" htmlUrl="http://www.csmonitor.com/"/>
+            <outline text="CNN.com" title="CNN.com" type="rss"
+                xmlUrl="http://rss.cnn.com/rss/cnn_topstories.rss" htmlUrl="http://www.cnn.com/?eref=rss_topstories"/>
+            <outline text="MarketWatch.com - Top Stories"
+                title="MarketWatch.com - Top Stories" type="rss"
+                xmlUrl="http://www.marketwatch.com/rss/topstories" htmlUrl="http://www.marketwatch.com/"/>
+            <outline text="NYT > Home Page" title="NYT > Home Page"
+                type="rss"
+                xmlUrl="http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml" htmlUrl="http://www.nytimes.com/pages/index.html?partner=rss&amp;emc=rss"/>
+            <outline text="Reuters: Top News" title="Reuters: Top News"
+                type="rss"
+                xmlUrl="http://feeds.reuters.com/reuters/topNews" htmlUrl="http://www.reuters.com"/>
+            <outline text="The Guardian World News"
+                title="The Guardian World News" type="rss"
+                xmlUrl="http://www.guardian.co.uk/rssfeed/0,,1,00.xml" htmlUrl="http://www.guardian.co.uk"/>
+        </outline>
+        <outline title="Java" text="Java">
+            <outline text="Eclipse News" title="Eclipse News" type="rss"
+                xmlUrl="http://www.eclipse.org/eclipsenews.rss" htmlUrl="http://www.eclipse.org"/>
+            <outline text="Java" title="Java" type="rss"
+                xmlUrl="http://www.oreillynet.com/pub/feed/7?format=rss2" htmlUrl="http://oreilly.com/java/"/>
+            <outline
+                text="Javalobby - The heart of the Java developer community"
+                title="Javalobby - The heart of the Java developer community"
+                type="rss"
+                xmlUrl="http://www.javalobby.org/forumRSS/18032.xml" htmlUrl="http://java.dzone.com/"/>
+            <outline text="Support Forums : Thread List - News"
+                title="Support Forums : Thread List - News" type="rss"
+                xmlUrl="http://www.theserverside.com/rss/theserverside-rss2.xml" htmlUrl="http://www.theserverside.com"/>
+            <outline text="The Java Posse" title="The Java Posse"
+                type="rss"
+                xmlUrl="http://feeds.feedburner.com/javaposse" htmlUrl="http://javaposse.com"/>
+        </outline>
+        <outline title="Mobile" text="Mobile">
+            <outline text="All About Symbian" title="All About Symbian"
+                type="rss"
+                xmlUrl="http://rss.allaboutsymbian.com/news/rss2all.xml" htmlUrl="http://www.allaboutsymbian.com/"/>
+            <outline text="Engadget Mobile" title="Engadget Mobile"
+                type="rss"
+                xmlUrl="http://www.engadgetmobile.com/rss.xml" htmlUrl="http://mobile.engadget.com"/>
+            <outline text="Mobile" title="Mobile" type="rss"
+                xmlUrl="http://feeds.moconews.net/moconews/" htmlUrl="http://paidcontent.org"/>
+            <outline text="MobileBurn.com" title="MobileBurn.com"
+                type="rss"
+                xmlUrl="http://www.mobileburn.com/xml/rss2.jsp" htmlUrl="http://www.mobileburn.com/"/>
+            <outline text="Phone Scoop - Latest News"
+                title="Phone Scoop - Latest News" type="rss"
+                xmlUrl="http://www.phonescoop.com/rss/news.php" htmlUrl="http://www.phonescoop.com/"/>
+            <outline text="TechCrunch » Mobile"
+                title="TechCrunch » Mobile" type="rss"
+                xmlUrl="http://feeds.feedburner.com/Mobilecrunch" htmlUrl="http://techcrunch.com"/>
+        </outline>
+        <outline title="Journals" text="Journals">
+            <outline text="Applied Physics Letters: All Topics"
+                title="Applied Physics Letters: All Topics" type="rss"
+                xmlUrl="http://scitation.aip.org/rss/apl1.xml" htmlUrl="http://scitation.aip.org/"/>
+            <outline text="Nature - Issue - nature.com science feeds"
+                title="Nature - Issue - nature.com science feeds"
+                type="rss"
+                xmlUrl="http://www.nature.com/nature/current_issue/rss" htmlUrl="http://www.nature.com/nature/current_issue/"/>
+            <outline
+                text="Pattern Analysis and Machine Intelligence, IEEE Transactions on - new TOC"
+                title="Pattern Analysis and Machine Intelligence, IEEE Transactions on - new TOC"
+                type="rss"
+                xmlUrl="http://ieeexplore.ieee.org/rss/TOC34.XML" htmlUrl="http://ieeexplore.ieee.org"/>
+            <outline text="PLoS Biology: New Articles"
+                title="PLoS Biology: New Articles" type="rss"
+                xmlUrl="http://biology.plosjournals.org/perlserv/?request=get-rss&amp;issn=1545-7885&amp;type=new-articles" htmlUrl="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Fbiology.plosjournals.org%2Fperlserv%2F%3Frequest%3Dget-rss%26issn%3D1545-7885%26type%3Dnew-articles"/>
+            <outline
+                text="Proceedings of the National Academy of Sciences current issue"
+                title="Proceedings of the National Academy of Sciences current issue"
+                type="rss" xmlUrl="http://www.pnas.org/rss/current.xml" htmlUrl="http://www.pnas.org"/>
+            <outline text="Science: Current Issue"
+                title="Science: Current Issue" type="rss"
+                xmlUrl="http://www.sciencemag.org/rss/current.xml" htmlUrl="http://www.sciencemag.org"/>
+        </outline>
+        <outline title="Entertainment" text="Entertainment">
+            <outline text="AintItCool Articles"
+                title="AintItCool Articles" type="rss"
+                xmlUrl="http://www.aintitcool.com/node/feed" htmlUrl="http://www.aintitcool.com/articles/rss"/>
+            <outline text="E! Online (US) - Top Stories"
+                title="E! Online (US) - Top Stories" type="rss"
+                xmlUrl="http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml" htmlUrl="http://www.eonline.com/"/>
+            <outline text="Entertainment News Headlines - Yahoo! News"
+                title="Entertainment News Headlines - Yahoo! News"
+                type="rss"
+                xmlUrl="http://rss.news.yahoo.com/rss/entertainment" htmlUrl="http://news.yahoo.com/entertainment/"/>
+            <outline text="TMZ.com" title="TMZ.com" type="rss"
+                xmlUrl="http://www.tmz.com/rss.xml" htmlUrl="http://www.tmz.com"/>
+            <outline text="TV on HuffingtonPost.com"
+                title="TV on HuffingtonPost.com" type="rss"
+                xmlUrl="http://www.tvsquad.com/rss.xml" htmlUrl="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Fwww.tvsquad.com%2Frss.xml"/>
+        </outline>
+        <outline title="Magazines" text="Magazines">
+            <outline text="AMERICAN.COM -- A Magazine of Ideas, Online"
+                title="AMERICAN.COM -- A Magazine of Ideas, Online"
+                type="rss" xmlUrl="http://feeds.feedburner.com/american" htmlUrl="http://www.american.com"/>
+            <outline text="Esquire.com Article Feed"
+                title="Esquire.com Article Feed" type="rss"
+                xmlUrl="http://www.esquire.com/rss/" htmlUrl="http://www.esquire.com/"/>
+            <outline text="The Believer" title="The Believer" type="rss"
+                xmlUrl="http://www.believermag.com/feed/" htmlUrl="http://www.believermag.com"/>
+            <outline text="The Walrus Magazine"
+                title="The Walrus Magazine" type="rss"
+                xmlUrl="http://www.walrusmagazine.com/index.xml" htmlUrl="http://.walrusmagazine.com/"/>
+        </outline>
+        <outline title="Journalism" text="Journalism">
+            <outline text="CJR" title="CJR" type="rss"
+                xmlUrl="http://www.cjrdaily.org/atom.xml" htmlUrl="http://www.cjr.org/"/>
+            <outline text="CyberJournalist.net"
+                title="CyberJournalist.net" type="rss"
+                xmlUrl="http://feeds.feedburner.com/cyberjournalist" htmlUrl="http://www.cyberjournalist.net"/>
+        </outline>
+        <outline title="Finance" text="Finance">
+            <outline text="Business and financial news - CNNMoney.com"
+                title="Business and financial news - CNNMoney.com"
+                type="rss"
+                xmlUrl="http://rss.cnn.com/rss/money_topstories.rss" htmlUrl="http://money.cnn.com/rssclick/?section=money_topstories"/>
+            <outline text="Fool.com Headlines"
+                title="Fool.com Headlines" type="rss"
+                xmlUrl="http://www.fool.com/About/headlines/rss_headlines.asp" htmlUrl="http://www.fool.com"/>
+            <outline
+                text="Get Rich Slowly - Personal Finance That Makes Sense."
+                title="Get Rich Slowly - Personal Finance That Makes Sense."
+                type="rss"
+                xmlUrl="http://feeds.feedburner.com/getrichslowly" htmlUrl="http://www.getrichslowly.org/blog"/>
+            <outline text="MarketWatch.com - Top Stories"
+                title="MarketWatch.com - Top Stories" type="rss"
+                xmlUrl="http://www.marketwatch.com/rss/topstories" htmlUrl="http://www.marketwatch.com/"/>
+            <outline text="TheStreet.com" title="TheStreet.com"
+                type="rss"
+                xmlUrl="http://www.thestreet.com/feeds/rss/index.xml" htmlUrl="http://www.thestreet.com/"/>
+        </outline>
+        <outline title="Jokes" text="Jokes">
+            <outline text="Hilarious Jokes on Funtoosh.com"
+                title="Hilarious Jokes on Funtoosh.com" type="rss"
+                xmlUrl="http://www.funtoosh.com/rss/latest_jokes.php" htmlUrl="http://www.funtoosh.com"/>
+            <outline text="Jokes - jokes4all.net!"
+                title="Jokes - jokes4all.net!" type="rss"
+                xmlUrl="http://jokes4all.net/rss/440010111/jokes.xml" htmlUrl="http://jokes4all.net"/>
+            <outline text="Jumbo Joke: Humor the Way You Like It"
+                title="Jumbo Joke: Humor the Way You Like It" type="rss"
+                xmlUrl="http://www.jumbojoke.com/index.rdf" htmlUrl="http://www.jumbojoke.com/"/>
+            <outline text="RHF Jokes of the Day"
+                title="RHF Jokes of the Day" type="rss"
+                xmlUrl="http://www.netfunny.com/rhf/current.rss" htmlUrl="http://www.netfunny.com/rhf/current.html"/>
+            <outline text="SantaBanta Jokes" title="SantaBanta Jokes"
+                type="rss"
+                xmlUrl="http://www.santabanta.com/rss/jokes.asp" htmlUrl="http://www.santabanta.com/jokescat.asp"/>
+        </outline>
+        <outline title="Webcomics" text="Webcomics">
+            <outline text="Dinosaur Comics" title="Dinosaur Comics"
+                type="rss"
+                xmlUrl="http://www.rsspect.com/rss/qwantz.xml" htmlUrl="http://www.qwantz.com"/>
+            <outline text="Explosm.net" title="Explosm.net" type="rss"
+                xmlUrl="http://feeds.feedburner.com/Explosm" htmlUrl="http://www.explosm.net"/>
+            <outline text="QC RSS" title="QC RSS" type="rss"
+                xmlUrl="http://www.questionablecontent.net/QCRSS.xml" htmlUrl="http://www.questionablecontent.net"/>
+            <outline text="Real Life Comics" title="Real Life Comics"
+                type="rss"
+                xmlUrl="http://www.reallifecomics.com/index.xml" htmlUrl="http://www.reallifecomics.com/"/>
+        </outline>
+        <outline title="Humour" text="Humour">
+            <outline text="B3ta" title="B3ta" type="rss"
+                xmlUrl="http://www.b3ta.com/xml/combined.php?rss=1" htmlUrl="http://www.b3ta.com/"/>
+            <outline text="Dave Gorman" title="Dave Gorman" type="rss"
+                xmlUrl="http://gormano.blogspot.com/feeds/posts/default" htmlUrl="http://gormano.blogspot.com/"/>
+            <outline text="The Daily Mash" title="The Daily Mash"
+                type="rss"
+                xmlUrl="http://www.thedailymash.co.uk/rss.xml" htmlUrl="http://www.thedailymash.co.uk"/>
+        </outline>
+        <outline title="Art" text="Art">
+            <outline
+                text="lines and colors :: a blog about drawing, painting, illustration, comics, concept art and other visual arts"
+                title="lines and colors :: a blog about drawing, painting, illustration, comics, concept art and other visual arts"
+                type="rss" xmlUrl="http://www.linesandcolors.com/feed/" htmlUrl="http://www.linesandcolors.com"/>
+            <outline text="NYT > Art &amp; Design"
+                title="NYT > Art &amp; Design" type="rss"
+                xmlUrl="http://www.nytimes.com/services/xml/rss/nyt/ArtandDesign.xml" htmlUrl="http://www.nytimes.com/pages/arts/design/index.html?partner=rss&amp;emc=rss"/>
+            <outline text="The Rhizome Frontpage RSS"
+                title="The Rhizome Frontpage RSS" type="rss"
+                xmlUrl="http://rhizome.org/syndicate/fp.rss" htmlUrl="http://rhizome.org/feeds/frontpage/"/>
+            <outline text="we make money not art"
+                title="we make money not art" type="rss"
+                xmlUrl="http://feeds.we-make-money-not-art.com/wmmna" htmlUrl="http://www.we-make-money-not-art.com/"/>
+        </outline>
+        <outline title="Books" text="Books">
+            <outline text="ArtsBeat" title="ArtsBeat" type="rss"
+                xmlUrl="http://papercuts.blogs.nytimes.com/rss2.xml" htmlUrl="http://artsbeat.blogs.nytimes.com/"/>
+            <outline
+                text="Books news, reviews and author interviews | guardian.co.uk"
+                title="Books news, reviews and author interviews | guardian.co.uk"
+                type="rss"
+                xmlUrl="http://www.guardian.co.uk/rssfeed/0,,10,00.xml" htmlUrl="http://www.guardian.co.uk/books"/>
+            <outline text="London Review of Books"
+                title="London Review of Books" type="rss"
+                xmlUrl="http://www.lrb.co.uk/homerss.xml" htmlUrl="http://www.lrb.co.uk/"/>
+            <outline text="nybooks.com: Recent items"
+                title="nybooks.com: Recent items" type="rss"
+                xmlUrl="http://feeds.feedburner.com/nybooks" htmlUrl="http://www.nybooks.com/"/>
+            <outline text="NYT > Books" title="NYT > Books" type="rss"
+                xmlUrl="http://www.nytimes.com/services/xml/rss/nyt/Books.xml" htmlUrl="http://www.nytimes.com/pages/books/index.html?partner=rss&amp;emc=rss"/>
+        </outline>
+        <outline title="Gadgets" text="Gadgets">
+            <outline text="Akihabara News" title="Akihabara News"
+                type="rss"
+                xmlUrl="http://www.akihabaranews.com/en/rss.html" htmlUrl="http://en.akihabaranews.com"/>
+            <outline text="Popgadget: Personal Tech for Women"
+                title="Popgadget: Personal Tech for Women" type="rss"
+                xmlUrl="http://www.popgadget.net/atom.xml" htmlUrl="http://www.popgadget.net/"/>
+            <outline text="TechCrunch » Gadgets"
+                title="TechCrunch » Gadgets" type="rss"
+                xmlUrl="http://feeds.feedburner.com/crunchgear" htmlUrl="http://techcrunch.com"/>
+            <outline text="The Gadgeteer" title="The Gadgeteer"
+                type="rss" xmlUrl="http://www.the-gadgeteer.com/feed" htmlUrl="http://the-gadgeteer.com"/>
+            <outline text="Ubergizmo" title="Ubergizmo" type="rss"
+                xmlUrl="http://www.ubergizmo.com/index.xml" htmlUrl="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Fwww.ubergizmo.com%2Findex.xml"/>
+        </outline>
+        <outline title="Cricket" text="Cricket">
+            <outline text="FOXSPORTS.com.au | Cricket"
+                title="FOXSPORTS.com.au | Cricket" type="rss"
+                xmlUrl="http://feeds.news.com.au/public/rss/2.0/fs_cricket_15.xml" htmlUrl="http://foxsports.com.au/cricket/"/>
+            <outline text="Rediff Cricket" title="Rediff Cricket"
+                type="rss"
+                xmlUrl="http://www.rediff.com/rss/cricketrss.xml" htmlUrl="http://www.rediff.com/cricket/index.html"/>
+            <outline text="Sport" title="Sport" type="rss"
+                xmlUrl="http://www.telegraph.co.uk/newsfeed/rss/sport_main.xml" htmlUrl="http://www.telegraph.co.uk/sport/"/>
+            <outline text="The Surfer" title="The Surfer" type="rss"
+                xmlUrl="http://blogs.cricinfo.com/surfer/atom.xml" htmlUrl="http://blogs.espncricinfo.com/surfer/"/>
+        </outline>
+        <outline title="Fashion" text="Fashion">
+            <outline text="Face Hunter" title="Face Hunter" type="rss"
+                xmlUrl="http://facehunter.blogspot.com/feeds/posts/default" htmlUrl="http://facehunter.blogspot.com/"/>
+            <outline text="Fashionista" title="Fashionista" type="rss"
+                xmlUrl="http://www.fashionista.com/index.xml" htmlUrl="http://fashionista.com"/>
+            <outline text="Feature Feed" title="Feature Feed" type="rss"
+                xmlUrl="http://www.style.com/services/rss/feeds/fashion_features.xml" htmlUrl="http://www.style.com"/>
+            <outline text="InStyle.com - This Just In"
+                title="InStyle.com - This Just In" type="rss"
+                xmlUrl="http://rss.instyle.com/web/instyle/rss/index.xml" htmlUrl="http://www.instyle.com/instyle/"/>
+            <outline text="NYT > Fashion &amp; Style"
+                title="NYT > Fashion &amp; Style" type="rss"
+                xmlUrl="http://www.nytimes.com/services/xml/rss/nyt/FashionandStyle.xml" htmlUrl="http://www.nytimes.com/pages/fashion/index.html?partner=rss&amp;emc=rss"/>
+            <outline text="Style Bubble" title="Style Bubble" type="rss"
+                xmlUrl="http://stylebubble.typepad.com/style_bubble/atom.xml" htmlUrl="http://www.stylebubble.co.uk/style_bubble/"/>
+        </outline>
+        <outline title="Photography" text="Photography">
+            <outline text="[daily dose of imagery]"
+                title="[daily dose of imagery]" type="rss"
+                xmlUrl="http://wvs.topleftpixel.com/index_fullfeed.rdf" htmlUrl="http://wvs.topleftpixel.com/"/>
+            <outline text="Digital Photography School"
+                title="Digital Photography School" type="rss"
+                xmlUrl="http://feeds.feedburner.com/DigitalPhotographySchool" htmlUrl="http://digital-photography-school.com"/>
+        </outline>
+        <outline title="Technology" text="Technology">
+            <outline text="Ars Technica" title="Ars Technica" type="rss"
+                xmlUrl="http://arstechnica.com/index.ars/rss" htmlUrl="http://arstechnica.com/index.php"/>
+            <outline text="CNET News" title="CNET News" type="rss"
+                xmlUrl="http://news.com.com/2547-1_3-0-5.xml" htmlUrl="http://news.cnet.com/"/>
+            <outline text="Engadget" title="Engadget" type="rss"
+                xmlUrl="http://www.engadget.com/rss.xml" htmlUrl="http://www.engadget.com"/>
+            <outline text="Gizmodo" title="Gizmodo" type="rss"
+                xmlUrl="http://feeds.gawker.com/gizmodo/full" htmlUrl="http://gizmodo.com"/>
+            <outline text="Slashdot" title="Slashdot" type="rss"
+                xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" htmlUrl="http://slashdot.org/"/>
+            <outline text="TechCrunch" title="TechCrunch" type="rss"
+                xmlUrl="http://feeds.feedburner.com/Techcrunch" htmlUrl="http://techcrunch.com"/>
+            <outline text="The Register" title="The Register" type="rss"
+                xmlUrl="http://www.theregister.co.uk/excerpts.rss" htmlUrl="http://www.theregister.co.uk/"/>
+            <outline text="Top News" title="Top News" type="rss"
+                xmlUrl="http://digg.com/rss/index.xml" htmlUrl="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Fdigg.com%2Frss%2Findex.xml"/>
+            <outline text="Wired Top Stories" title="Wired Top Stories"
+                type="rss"
+                xmlUrl="http://www.wired.com/news/feeds/rss2/0,2610,,00.xml" htmlUrl="http://www.wired.com"/>
+        </outline>
+    </body>
+</opml>
