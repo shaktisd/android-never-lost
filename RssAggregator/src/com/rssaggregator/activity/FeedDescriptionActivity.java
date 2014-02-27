@@ -9,15 +9,10 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.tapfortap.AdView;
-import com.tapfortap.TapForTap;
 
 public class FeedDescriptionActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		TapForTap.setDefaultAppId("031a4b50-89fd-012f-29a4-40405d9d80d6");
-        TapForTap.checkIn(this);
 		
 		setContentView(R.layout.webview);
 		WebView webView = (WebView)findViewById(R.id.webview);;
@@ -41,8 +36,6 @@ public class FeedDescriptionActivity extends Activity {
 		this.setTitle("Home > "+getRssAggregatorApplication().getFeedSourceName()+" > Article");
 		webView.loadData(html+feedDescription, "text/html", null);
 		
-		AdView adView = (AdView) findViewById(R.id.ad_view);
-        adView.loadAds();
 	}
 	
 	private RssAggregatorApplication getRssAggregatorApplication() {
